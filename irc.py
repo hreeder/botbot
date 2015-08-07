@@ -9,11 +9,11 @@ from tornado import tcpclient, gen, ioloop
 logger = logging.getLogger(__name__)
 
 class IRC(object):
-    def __init__(self, host, port, nick, channel):
+    def __init__(self, host, port, nick, channels):
         self.host = host
         self.port = port
         self.nick = nick
-        self.channel = channel
+        self.channels = channels
         self._conn = None
         self._loopinstance = ioloop.IOLoop.instance()
         self.channel_message_received_callback = None
@@ -86,7 +86,8 @@ class IRC(object):
 
     def _join_channel(self):
         logger.info("Joining channels")
-        self._write_line("JOIN {0}".format(self.channel))
+        for channel in self.channels:
+            self._write_line("JOIN {0}".format(channel))
 
     def start_connection(self):
         self._loopinstance.add_future(self._connect_to_server(), self._connection_complete)

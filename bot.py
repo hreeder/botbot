@@ -26,7 +26,7 @@ else:
 irc = IRC(host=config['IRC']['host'],
           port=config['IRC']['port'],
           nick=config['IRC']['nick'],
-          channel=config['IRC']['channel'])
+          channels=config['IRC']['channel'].split(" "))
 
 
 def main():
