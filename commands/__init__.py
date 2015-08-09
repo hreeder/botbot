@@ -13,5 +13,7 @@ commands = {
 pm_commands = {
     "help": help.help_pm,
     "die": internals.die,
-    "nick": internals.nick
+    "nick": internals.nick,
+    "join": internals.join,
+    "part": internals.part,
 }
