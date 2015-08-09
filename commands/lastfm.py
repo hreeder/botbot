@@ -2,6 +2,7 @@ import pylast
 
 
 def np(bot, channel, sender, args):
+    """Now Playing - Gets the currently scrobbling track for a given last.fm user. Usage: np thebigredbutton"""
     if args:
         user = args[0].strip()
     else:

@@ -4,6 +4,7 @@ import requests
 
 
 def whereis(bot, channel, sender, args):
+    """Where Is - Locates someone"""
     who = args[0].lower()
     rikki = ["rikki", "r2zer0"]
     if who in rikki:
