@@ -20,7 +20,7 @@ def whereis(bot, channel, sender, args):
 
 
 def whereis_rikki(bot, channel, sender, args):
-    endpoint = "http://gallium.r2zer0.net:5000/whereisrikki"
+    endpoint = "http://gallium.r2zer0.net:5000/"
     mapurl = "http://maps.googleapis.com/maps/api/staticmap?size=640x320&markers=size:large%7Ccolor:0xc0c0c0%7C"
     data = json.loads(requests.get(endpoint).text)
     last_updated = datetime.datetime.fromtimestamp(
