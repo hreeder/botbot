@@ -23,6 +23,8 @@ def whereis(bot, channel, sender, args):
                                         data['longitude'])
 
         bot.message(channel, response)
+    elif who == bot.nickname.lower():
+        bot.message(channel, "I am in the following places: " + ", ".join(bot.channels.keys()))
     else:
         bot.message(channel, "I do not know this '%s'. If they've got an open API reporting "
                              "their latitude and longitude, I'd love to know about it though!" % (who,))
