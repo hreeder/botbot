@@ -25,13 +25,11 @@ def whereis_rikki(bot, channel, sender, args):
     data = json.loads(requests.get(endpoint).text)
     last_updated = datetime.datetime.fromtimestamp(
         int(data['timestamp'])/1000)
+    reported = last_updated.strftime('%Y/%m/%d %H:%M')
 
-    response = "Rikki's last location, reported on %d/%d/%d %d:%d, was " % (last_updated.year,
-                                                                            last_updated.month,
-                                                                            last_updated.day,
-                                                                            last_updated.hour,
-                                                                            last_updated.minute)
-    response += mapurl + "%s+%s" % (data['latitude'],
-                                    data['longitude'])
+    response = "Rikki's last location, reported on %s, was %s%s+%s" % (reported,
+                                                                       mapurl,
+                                                                       data['latitude'],
+                                                                       data['longitude'])
 
     bot.message(channel, response)
