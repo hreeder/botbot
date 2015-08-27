@@ -1,4 +1,5 @@
 import commands
+import hooks
 import logging
 import pydle
 import sys
@@ -20,12 +21,16 @@ class BotBot(pydle.Client):
         self.config = config
         self.commands = {}
         self.pm_commands = {}
+        self.channel_hooks = []
 
     def register_command(self, command, action, type="channel"):
         if type == "pm":
             self.pm_commands[command] = action
         else:
             self.commands[command] = action
+
+    def register_hook(self, channel_hook):
+        self.channel_hooks.append(channel_hook)
 
     def on_connect(self):
         for channel in self.join_channels:
@@ -42,6 +47,10 @@ class BotBot(pydle.Client):
 
             if command in self.commands.keys():
                 self.commands[command](self, channel, sender, args)
+                return
+
+        for chan_hook in self.channel_hooks:
+            chan_hook(self, channel, sender, message)
 
     def on_private_message(self, sender, message):
         command = message.split()[0]
@@ -72,6 +81,9 @@ if __name__ == "__main__":
 
     for command in commands.pm_commands:
         client.register_command(command, commands.pm_commands[command], type="pm")
+
+    for hook in hooks.hooks:
+        client.register_hook(hook)
 
     client.connect(config['IRC']['host'], int(config['IRC']['port']))
     client.handle_forever()

@@ -1,0 +1,23 @@
+import json
+import re
+import requests
+
+
+def message_hook(bot, channel, sender, message):
+    listen_on = bot.config['Slack']['listen'].split()
+    if channel in listen_on and not sender.startswith("["):
+        endpoint = bot.config['Slack']['webhook']
+        chanstr = channel.replace("#","")
+        target_channel = bot.config['Slack'][chanstr+"_target"]
+
+        message = re.sub(r'/\[([^@\ ]]+)\]/', r'@$1', message)
+
+        payload = {
+            'text': message,
+            'username': sender
+        }
+
+        postit = requests.post(
+            endpoint,
+            data=json.dumps(payload)
+        )
