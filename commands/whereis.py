@@ -8,7 +8,9 @@ def whereis(bot, channel, sender, args):
     who = args[0].lower()
     targets = {
         'rikki': whereis_rikki,
-        'r2zer0': whereis_rikki
+        'r2zer0': whereis_rikki,
+        'rhiaro': whereis_amy,
+        'amy': whereis_amy
     }
     if who in targets.keys():
         targets[who](bot, channel, sender, args)
@@ -33,3 +35,8 @@ def whereis_rikki(bot, channel, sender, args):
                                                                        data['longitude'])
 
     bot.message(channel, response)
+    
+def whereis_amy(bot, channel, sender, args):
+    endpoint = "http://rhiaro.co.uk/where?plain=1"
+    data = requests.get(endpoint).text
+    bot.message(channel, data)
