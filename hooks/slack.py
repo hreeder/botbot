@@ -10,6 +10,7 @@ def message_hook(bot, channel, sender, message):
         chanstr = channel.replace("#","")
         target_channel = bot.config['Slack'][chanstr+"_target"]
 
+        message = message.replace("\x01", "")
         message = re.sub(r'/\[([^@\ ]]+)\]/', r'@$1', message)
 
         payload = {
