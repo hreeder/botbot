@@ -3,4 +3,5 @@ pydle==0.8.0
 pylast==1.3.0
 requests==2.7.0
 six==1.9.0
+slacker==0.7.3
 tornado==4.2.1
