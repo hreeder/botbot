@@ -6,7 +6,8 @@ commands = {
     "help": help.help,
     "whereis": whereis.whereis,
     "np": lastfm.np,
-    "slackwho": slack.slackwho
+    "slackwho": slack.slackwho,
+    "slackwhois": slack.slackwhois
 }
 
 # PM Commands should accept the following arguments
