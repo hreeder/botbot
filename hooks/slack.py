@@ -6,6 +6,7 @@ import requests
 def message_hook(bot, channel, sender, message):
     listen_on = bot.config['Slack']['listen'].split()
     if channel in listen_on and not sender.startswith("["):
+        print(channel, sender, message)
         endpoint = bot.config['Slack']['webhook']
         chanstr = channel.replace("#","")
         target_channel = bot.config['Slack'][chanstr+"_target"]
@@ -15,7 +16,8 @@ def message_hook(bot, channel, sender, message):
 
         payload = {
             'text': message,
-            'username': sender
+            'username': sender,
+            'channel': target_channel
         }
 
         postit = requests.post(
