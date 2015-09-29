@@ -25,7 +25,7 @@ def message_hook(bot, channel, sender, message):
         }
 
         if redis.exists(redis_key):
-            payload['icon_url'] = redis.get(redis_key)
+            payload['icon_url'] = redis.get(redis_key).decode("utf-8")
 
         postit = requests.post(
             endpoint,
