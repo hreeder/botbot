@@ -18,4 +18,5 @@ pm_commands = {
     "nick": internals.nick,
     "join": internals.join,
     "part": internals.part,
+    "slacksetavatar": slack.slacksetavatar
 }

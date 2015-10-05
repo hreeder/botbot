@@ -1,3 +1,6 @@
+import hashlib
+
+from redis import StrictRedis
 from slacker import Slacker
 
 
@@ -38,3 +41,21 @@ def slackwhois(bot, channel, sender, args):
         name_str += " (%s)" % user['profile']['real_name']
 
     bot.message(channel, "Slack User: %s, Presence: %s" % (name_str, user['presence']))
+
+
+def slacksetavatar(bot, sender, args):
+    if args:
+        inp = args[0]
+        redis = StrictRedis.from_url(bot.config['System']['redis_url'])
+        if inp.startswith("http://") or inp.startswith("https://"):
+            # we're dealing with a direct url, store it
+            redis.set(bot.config['System']['redis_prefix'] + "slack-avatar-" + sender, inp)
+            return
+        elif "@" in inp:
+            # We're dealing with an email, let's treat it as gravatar
+            url = "http://www.gravatar.com/avatar/" + hashlib.md5(inp.lower()).hexdigest() + "?s=200"
+            redis.set(bot.config['System']['redis_prefix'] + "slack-avatar-" + sender, url)
+            return
+        else:
+            bot.message(sender, "Sorry, that wasn't recognised. I can support setting an email for gravatar "
+                        "or a direct url for an avatar")
