@@ -53,7 +53,7 @@ def slacksetavatar(bot, sender, args):
             return
         elif "@" in inp:
             # We're dealing with an email, let's treat it as gravatar
-            url = "http://www.gravatar.com/avatar/" + hashlib.md5(inp.lower()).hexdigest() + "?s=200"
+            url = "http://www.gravatar.com/avatar/" + hashlib.md5(inp.encode('utf-8').lower()).hexdigest() + "?s=200"
             redis.set(bot.config['System']['redis_prefix'] + "slack-avatar-" + sender, url)
             return
         else:
