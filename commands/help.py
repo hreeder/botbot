@@ -4,7 +4,8 @@ def help(bot, channel, sender, args):
         docstring = bot.commands[args[0]].__doc__
         bot.message(channel, "Help for {0}: {1}".format(args[0], docstring))
     else:
-        bot.message(channel, "I know the following channel commands: {0}".format(", ".join(bot.commands.keys())))
+        bot.message(channel, "I know the following channel commands: {0} "
+                             "(Note other commands may be available in PMs)".format(", ".join(sorted(bot.commands.keys()))))
 
 
 def help_pm(bot, sender, args):
@@ -14,4 +15,14 @@ def help_pm(bot, sender, args):
         bot.message(sender, "Help for {0}: {1}".format(args[0], docstring))
     else:
         bot.message(sender, "I know the following PM commands (Note some of these "
-                            "are for the bot owner only): {0}".format(", ".join(bot.pm_commands.keys())))
+                            "are for the bot owner only): {0}".format(", ".join(sorted(bot.pm_commands.keys()))))
+
+
+def bot_info(bot, channel, sender, args):
+    """Returns info about the bot, it's owner and where to report issues"""
+    bot.message(channel, "%s: I am %s, a deployment of BotBot. My owner is %s. Any issues can be reported at %s" % (
+        sender,
+        bot.config['IRC']['nick'],
+        bot.config['System']['owner'],
+        bot.config['System']['repo']
+    ))
