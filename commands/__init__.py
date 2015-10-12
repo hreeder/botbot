@@ -1,4 +1,4 @@
-from . import internals, help, lastfm, whereis, slack
+from . import internals, help, lastfm, whereis, slack, time
 
 # Commands should all accept the following arguments
 # bot, channel, sender_nickname, arguments
@@ -8,7 +8,8 @@ commands = {
     "np": lastfm.np,
     "slackwho": slack.slackwho,
     "slackwhois": slack.slackwhois,
-    "about": help.bot_info
+    "about": help.bot_info,
+    "time": time.time
 }
 
 # PM Commands should accept the following arguments
