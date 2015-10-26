@@ -18,6 +18,9 @@ def np(bot, channel, sender, args):
         if np:
             bot.message(channel, "[LastFM] %s is currently listening to '%s'" % (user.get_name(), np))
         else:
-            bot.message(channel, "[LastFM] %s is not currently scrobbling" % user.get_name())
+            last_played = user.get_recent_tracks(limit=2)
+            last_played = last_played[0]
+            bot.message(channel, "[LastFM] %s is not currently scrobbling - "
+                                 "They last listened to %s" % (user.get_name(), last_played.track))
     except pylast.WSError:
             bot.message(channel, "[LastFM] I cannot find the user '%s'" % user)
