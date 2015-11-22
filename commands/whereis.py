@@ -10,7 +10,9 @@ def whereis(bot, channel, sender, args):
         'rikki': whereis_rikki,
         'r2zer0': whereis_rikki,
         'rhiaro': whereis_amy,
-        'amy': whereis_amy
+        'amy': whereis_amy,
+        'tbrb': whereis_tbrb,
+        'harry': whereis_tbrb
     }
     if who in targets.keys():
         targets[who](bot, channel, sender, args)
@@ -35,6 +37,15 @@ def whereis_rikki(bot, channel, sender, args):
                                                                        data['longitude'])
 
     bot.message(channel, response)
+
+
+def whereis_tbrb(bot, channel, sender, args):
+    endpoint = "http://track-api.harryreeder.co.uk/ehpeeye"
+    mapurl = "http://maps.googleapis.com/maps/api/staticmap?size=640x320&markers=size:large%7Ccolor:0xc0c0c0%7C"
+    data = json.loads(requests.get(endpoint).text)
+    response = "tbrb's last location was %s%s+%s" % (mapurl,
+                                                     data['loc']['latitude'], data['loc']['longitude'])
+
     
 def whereis_amy(bot, channel, sender, args):
     endpoint = "http://rhiaro.co.uk/where?plain=1"
