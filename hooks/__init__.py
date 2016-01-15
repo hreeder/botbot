@@ -1,3 +1,4 @@
-from . import slack
+from . import slack, karma
 
-hooks = [slack.message_hook,]
+hooks = [slack.message_hook,
+         karma.message_hook]
