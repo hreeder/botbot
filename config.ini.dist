@@ -1,0 +1,29 @@
+[Database]
+# Connection String Format: http://docs.sqlalchemy.org/en/rel_0_9/core/engines.html
+connection_string = sqlite:///db.sqlite
+
+[IRC]
+host = chat.freenode.net
+port = 6667
+channel = #botbot
+nick = botbot
+trigger = $
+
+[System]
+debug = yes
+die_password = please
+owner = tbrb
+repo = https://github.com/hreeder/botbot
+redis_url = redis://localhost:6379/0
+redis_prefix = botbot-
+
+[Slack]
+listen = #channel #otherchannel
+api_key = abcdef
+webhook = https://hooks.slack.com/services/abcdef
+channel_target = #slackchannel
+otherchannel_target = #otherslackchannel
+
+[LastFM]
+key = lastfmkey
+secret = lastfmsecret
