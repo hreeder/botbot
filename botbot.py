@@ -77,13 +77,16 @@ if __name__ == "__main__":
     client = BotBot(config)
 
     for command in commands.commands:
-        client.register_command(command, commands.commands[command])
+        if command not in config['System']['command_blacklist'].split(" "):
+            client.register_command(command, commands.commands[command])
 
     for command in commands.pm_commands:
-        client.register_command(command, commands.pm_commands[command], type="pm")
+        if command not in config['System']['pm_command_blacklist'].split(" "):
+            client.register_command(command, commands.pm_commands[command], type="pm")
 
     for hook in hooks.hooks:
-        client.register_hook(hook)
+        if hook.__module__.split(".")[1] not in config['System']['hook_blacklist'].split(" "):
+            client.register_hook(hook)
 
     client.connect(config['IRC']['host'], int(config['IRC']['port']))
     client.handle_forever()

@@ -16,6 +16,9 @@ owner = tbrb
 repo = https://github.com/hreeder/botbot
 redis_url = redis://localhost:6379/0
 redis_prefix = botbot-
+command_blacklist = commandname anothercommand
+pm_command_blacklist = pmcommand
+hook_blacklist = slack
 
 [Slack]
 listen = #channel #otherchannel
