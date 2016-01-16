@@ -11,7 +11,8 @@ commands = {
     "about": help.bot_info,
     "time": time.time,
     "karma": karma.karma_command,
-    "top5": karma.top_karma
+    "top5": karma.top_karma,
+    "last5": karma.lowest_karma
 }
 
 # PM Commands should accept the following arguments
