@@ -1,9 +1,12 @@
+backports-abc==0.4
 chardet==2.3.0
+decorator==4.0.6
+ipython-genutils==0.1.0
 pydle==0.8.0
 pylast==1.4.2
 redis==2.10.3
-requests==2.7.0
+requests==2.9.1
 six==1.10.0
-slacker==0.7.3
+slacker==0.9.0
 tornado==4.2.1
 traitlets==4.0.0
