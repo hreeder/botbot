@@ -1,5 +1,6 @@
 from redis import StrictRedis
 
+
 def increment(bot, term):
     redis = StrictRedis.from_url(bot.config['System']['redis_url'])
     if redis.hexists(bot.config['System']['redis_prefix'] + "karma", term):
@@ -8,7 +9,8 @@ def increment(bot, term):
     else:
         redis.hset(bot.config['System']['redis_prefix'] + "karma", term, 1)
 
-def decremenet(bot, term):
+
+def decrement(bot, term):
     redis = StrictRedis.from_url(bot.config['System']['redis_url'])
     if redis.hexists(bot.config['System']['redis_prefix'] + "karma", term):
         oldvalue = int(redis.hget(bot.config['System']['redis_prefix'] + "karma", term))
@@ -26,12 +28,12 @@ def message_hook(bot, channel, sender, message):
 
         if term == sender:
             bot.message(channel, "Haha, nope!")
-            decremenet(bot, term)
+            decrement(bot, term)
         else:
             increment(bot, term)
     elif message.endswith("--"):
         term = message[:-2]
-        decremenet(bot, term)
+        decrement(bot, term)
 
     if term:
         redis = StrictRedis.from_url(bot.config['System']['redis_url'])
