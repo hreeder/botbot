@@ -24,15 +24,15 @@ def message_hook(bot, channel, sender, message):
     term = None
 
     if message.endswith("++"):
-        term = message[:-2]
+        term = message[:-2].lower()
 
-        if term == sender:
+        if term == sender.lower():
             bot.message(channel, "Haha, nope!")
             decrement(bot, term)
         else:
             increment(bot, term)
     elif message.endswith("--"):
-        term = message[:-2]
+        term = message[:-2].lower()
         decrement(bot, term)
 
     if term:
