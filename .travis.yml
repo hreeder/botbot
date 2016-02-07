@@ -1,8 +1,10 @@
+language: python
 python:
   - "3.4"
 
 install:
-  - "pip install flake8 --use-mirrors"
+  - "easy_install -U setuptools"
+  - "pip install flake8"
   - "pip install tornado"
   - "pip install -r requirements.txt"
 
