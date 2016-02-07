@@ -4,6 +4,7 @@ import time as pytime
 import urllib
 import requests
 
+
 def geocode(bot, channel, sender, args):
     geocode_endpoint = "http://maps.googleapis.com/maps/api/geocode/json"
     geocoder_args = {
@@ -30,7 +31,7 @@ def time(bot, channel, sender, args):
 
     geocoded = geocode(bot, channel, sender, args)
     if type(geocoded) != dict:
-        bot.message(channel,geocoded)
+        bot.message(channel, geocoded)
     latlng = geocoded[u'geometry'][u'location']
 
     timezoner_args = {
@@ -62,4 +63,8 @@ def time(bot, channel, sender, args):
 
     timenow = datetime.datetime.utcfromtimestamp(localtime[u'timestamp'])
 
-    bot.message(channel,"%s: It is currently %s in %s || Timezone: %s (%s)" % (sender, timenow.strftime("%H:%M"), geocoded[u'formatted_address'], tz, timezone[u'timeZoneName']))
+    bot.message(channel, "%s: It is currently %s in %s || Timezone: %s (%s)" % (sender,
+                                                                                timenow.strftime("%H:%M"),
+                                                                                geocoded[u'formatted_address'],
+                                                                                tz,
+                                                                                timezone[u'timeZoneName']))

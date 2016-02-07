@@ -12,8 +12,8 @@ def message_hook(bot, channel, sender, message):
         redis_key = bot.config['System']['redis_prefix'] + "slack-avatar-" + sender
 
         endpoint = bot.config['Slack']['webhook']
-        chanstr = channel.replace("#","")
-        target_channel = bot.config['Slack'][chanstr+"_target"]
+        chanstr = channel.replace("#", "")
+        target_channel = bot.config['Slack'][chanstr + "_target"]
 
         message = message.replace("\x01", "")
         message = re.sub(r'/\[([^@\ ]]+)\]/', r'@$1', message)
@@ -27,7 +27,4 @@ def message_hook(bot, channel, sender, message):
         if redis.exists(redis_key):
             payload['icon_url'] = redis.get(redis_key).decode("utf-8")
 
-        postit = requests.post(
-            endpoint,
-            data=json.dumps(payload)
-        )
+        requests.post(endpoint, data=json.dumps(payload))

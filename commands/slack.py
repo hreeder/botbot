@@ -14,7 +14,7 @@ def slackwho(bot, channel, sender, args):
     while users:
         outlist = []
         try:
-            for n in range(0,10):
+            for n in range(0, 10):
                 outlist.append(users.pop())
         except IndexError:
             pass
