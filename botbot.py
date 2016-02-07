@@ -90,3 +90,4 @@ if __name__ == "__main__":
 
     client.connect(config['IRC']['host'], int(config['IRC']['port']))
     client.handle_forever()
+    
