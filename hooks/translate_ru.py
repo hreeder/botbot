@@ -9,7 +9,7 @@ cyrillic_latin = {u'а': 'a', u'б': 'b', u'в': 'v', u'г': 'g',
                   u'у': 'u', u'ф': 'f', u'х': 'h', u'ц': 'ts',
                   u'ч': 'ch', u'ш': 'sh', u'щ': 'sch', u'ы': 'i',
                   u'э': 'e', u'ю': 'yu', u'я': 'ya', u' ': ' ', 
-                  u'ъ', '', u'ь', ''}
+                  u'ъ': '', u'ь': ''}
 
 
 def translate_text(bot, text):
