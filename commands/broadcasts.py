@@ -71,9 +71,10 @@ def unsubscribe(bot, channel, sender, args):
     else:
         bot.message(channel, "%s: Either that topic does not exist, or you are not a subscriber, and thus cannot unsubscribe from it!" % sender)
 
+
 def broadcast(bot, channel, sender, args):
     topic = args[0]
-    
+
     redis = StrictRedis.from_url(bot.config['System']['redis_url'])
     if redis.sismember(bot.config['System']['redis_prefix'] + "lists", topic) and redis.sismember(bot.config['System']['redis_prefix'] + "lists:%s:senders" % topic, sender):
         subscribers = redis.smembers(bot.config['System']['redis_prefix'] + "lists:%s:subscribers" % topic)
