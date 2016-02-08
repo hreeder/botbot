@@ -16,7 +16,10 @@ commands = {
     "bc": broadcasts.broadcast,
     "broadcast-topic-create": broadcasts.create_topic,
     "broadcast-topic-destroy": broadcasts.destroy_topic,
-    "subscribe": broadcasts.subscribe
+    "broadcast-topic-allow": broadcasts.allow_sender,
+    "broadcast-topic-revoke": broadcasts.disallow_sender,
+    "subscribe": broadcasts.subscribe,
+    "unsubscribe": broadcasts.unsubscribe
 }
 
 # PM Commands should accept the following arguments
