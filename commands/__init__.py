@@ -13,7 +13,10 @@ commands = {
     "karma": karma.karma_command,
     "top5": karma.top_karma,
     "last5": karma.lowest_karma,
-    "bc": broadcasts.broadcast
+    "bc": broadcasts.broadcast,
+    "broadcast-topic-create": broadcasts.create_topic,
+    "broadcast-topic-destroy": broadcasts.destroy_topic,
+    "subscribe": broadcasts.subscribe
 }
 
 # PM Commands should accept the following arguments
