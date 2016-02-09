@@ -3,8 +3,11 @@ import hooks
 import logging
 import pydle
 import sys
+import webhooks
 
 from configparser import ConfigParser
+from pydle.async import EventLoop
+from tornado.httpserver import HTTPServer
 
 logger = logging.getLogger("BotBot-Bot")
 
@@ -22,6 +25,8 @@ class BotBot(pydle.Client):
         self.commands = {}
         self.pm_commands = {}
         self.channel_hooks = []
+
+        self.event_loop = EventLoop()
 
     def register_command(self, command, action, type="channel"):
         if type == "pm":
@@ -87,6 +92,11 @@ if __name__ == "__main__":
     for hook in hooks.hooks:
         if hook.__module__.split(".")[1] not in config['System']['hook_blacklist'].split(" "):
             client.register_hook(hook)
+
+    botbot_webhooks_app = webhooks.app
+    botbot_webhooks_app._ctx = client
+    http_server = HTTPServer(botbot_webhooks_app, io_loop=client.event_loop.io_loop)
+    http_server.listen(config['Webhooks']['port'], config['Webhooks']['host'])
 
     client.connect(config['IRC']['host'], int(config['IRC']['port']))
     client.handle_forever()
