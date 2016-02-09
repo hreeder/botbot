@@ -1,4 +1,4 @@
-from . import internals, help, lastfm, whereis, slack, time, karma
+from . import internals, help, lastfm, whereis, slack, time, karma, broadcasts
 
 # Commands should all accept the following arguments
 # bot, channel, sender_nickname, arguments
@@ -12,7 +12,16 @@ commands = {
     "time": time.time,
     "karma": karma.karma_command,
     "top5": karma.top_karma,
-    "last5": karma.lowest_karma
+    "last5": karma.lowest_karma,
+    "bc": broadcasts.broadcast,
+    "broadcast-topic-create": broadcasts.create_topic,
+    "broadcast-topic-destroy": broadcasts.destroy_topic,
+    "broadcast-topic-allow": broadcasts.allow_sender,
+    "broadcast-topic-revoke": broadcasts.disallow_sender,
+    "broadcast-topic-transfer": broadcasts.transfer_topic,
+    "subscriptions": broadcasts.list_topics,
+    "subscribe": broadcasts.subscribe,
+    "unsubscribe": broadcasts.unsubscribe
 }
 
 # PM Commands should accept the following arguments
