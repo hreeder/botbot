@@ -22,7 +22,7 @@ def translate_text(bot, text):
 
 
 def message_hook(bot, channel, sender, message):
-    if set(message) <= set(cyrillic_latin.keys()):
+    if set(message) <= set(cyrillic_latin.keys()) and message.strip():
         translit = ''.join(str(c) for c in map(lambda x: cyrillic_latin[x], message))
         translate = translate_text(bot, message)
         bot.message(channel, '%s <%s> ~ %s' % (message, translit, translate))
