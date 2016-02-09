@@ -94,3 +94,14 @@ def broadcast(bot, channel, sender, args):
             bot.message(channel, "%s: You cannot send to that topic!" % sender)
         else:
             bot.message(channel, "%s: Cannot send to a topic that doesn't exist!" % sender)
+
+
+def list_topics(bot, channel, sender, args):
+    redis = StrictRedis.from_url(bot.config['System']['redis_url'])
+    subscribed_topics = []
+    topics = redis.smembers(bot.config['System']['redis_prefix'] + "lists")
+    for topic in topics:
+        topic = topic.decode('utf-8')
+        if redis.sismember(bot.config['System']['redis_prefix'] + "lists:%s:subscribers" % topic, sender):
+            subscribed_topics.append(topic)
+    bot.message(channel, "%s: You are subscribed to the following topics: %s" % (sender, ", ".join(subscribed_topics)))
