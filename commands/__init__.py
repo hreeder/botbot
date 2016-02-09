@@ -18,6 +18,7 @@ commands = {
     "broadcast-topic-destroy": broadcasts.destroy_topic,
     "broadcast-topic-allow": broadcasts.allow_sender,
     "broadcast-topic-revoke": broadcasts.disallow_sender,
+    "broadcast-topic-transfer": broadcasts.transfer_topic,
     "subscribe": broadcasts.subscribe,
     "unsubscribe": broadcasts.unsubscribe
 }

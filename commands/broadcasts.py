@@ -49,7 +49,13 @@ def disallow_sender(bot, channel, sender, args):
 
 
 def transfer_topic(bot, channel, sender, args):
-    pass
+    topic = args[0]
+    redis = StrictRedis.from_url(bot.config['System']['redis_url'])
+    if sender == redis.hget(bot.config['System']['redis_prefix'] + "lists:%s" % topic, "owner").decode('utf-8') and args[1]:
+        redis.hset(bot.config['System']['redis_prefix'] + "lists:%s" % topic, "owner", args[1])
+        bot.message(channel, "%s: You have now transferred ownership of the topic '%s' to %s" % (sender, topic, args[1]))
+    else:
+        bot.message(channel, "%s: You are not the owner of the topic '%s' and cannot transfer ownership of it." % (sender, topic))
 
 
 def subscribe(bot, channel, sender, args):
