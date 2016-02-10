@@ -60,14 +60,14 @@ class GithubHandler(RequestHandler):
     def handle_status(self, target_channel, body):
         repo = body['repository']['full_name']
         what_happened = body['description']
-        
+
         colour = {
             "success": Format.GREEN,
             "failure": Format.RED,
             "error": Format.RED,
             "pending": Format.YELLOW
         }
-        
+
         self.bot.message("#" + target_channel, "%s %s%s%s - %s%s%s" % (
             self.prefix,
             Format.BLUE, repo, Format.RESET,
