@@ -20,12 +20,13 @@ class GithubHandler(RequestHandler):
     @coroutine
     def post(self):
         hook_type = self.request.headers['X-GitHub-Event']
-        body = json.loads(self.request.body.decode())
+        body_text = self.request.body.decode()
+        body = json.loads(body_text)
 
         target_channel = self.get_argument("channel", None, None)
 
         logger.debug("Github Hook Type: %s" % hook_type)
-        logger.debug("Body: %s" % json.dumps(body))
+        logger.debug("Body: %s" % body_text)
 
         method_name = "handle_%s" % (hook_type.lower().replace(" ", "_"))
 
@@ -39,3 +40,36 @@ class GithubHandler(RequestHandler):
     @coroutine
     def handle_ping(self, target_channel, body):
         logger.debug("Github PING <==> PONG")
+        self.bot.message("#" + target_channel, "%s PING" % self.prefix)
+
+    @coroutine
+    def handle_push(self, target_channel, body):
+        who = body['head_commit']['committer']['name']
+        repo = body['repository']['full_name']
+        commits = body['commits']
+        commit_suffix = "s" if len(commits) > 1 else ""
+        self.bot.message("#" + target_channel, "%s %s%s%s has pushed %s%d%s commit%s to %s%s%s" % (
+            self.prefix,
+            Format.BLUE, who, Format.RESET,
+            Format.YELLOW, len(commits), Format.RESET,
+            commit_suffix,
+            Format.GREEN, repo, Format.RESET
+        ))
+
+    @coroutine
+    def handle_status(self, target_channel, body):
+        repo = body['repository']['full_name']
+        what_happened = body['description']
+        
+        colour = {
+            "success": Format.GREEN,
+            "failure": Format.RED,
+            "error": Format.RED,
+            "pending": Format.YELLOW
+        }
+        
+        self.bot.message("#" + target_channel, "%s %s%s%s - %s%s%s" % (
+            self.prefix,
+            Format.BLUE, repo, Format.RESET,
+            colour[body['state']], what_happened, Format.RESET
+        ))
