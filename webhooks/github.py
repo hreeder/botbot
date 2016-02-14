@@ -152,3 +152,77 @@ class GithubHandler(RequestHandler):
             )
 
         self.bot.message("#" + target_channel, message)
+
+    @coroutine
+    def handle_issues(self, target_channel, body):
+        repo = body['repository']['full_name']
+        info = "issue %s#%d: %s%s" % (Format.GREEN, body['issue']['number'], body['issue']['title'], Format.RESET)
+        state = body['action']
+
+        if state == "assigned":
+            message = "%s %s%s%s - %s%s%s assigned %s to %s%s%s" % (
+                self.prefix,
+                Format.ORANGE, repo, Format.RESET,
+                Format.BLUE, body['sender']['login'], Format.RESET,
+                info,
+                Format.BLUE, body['issue']['assignee']['login'], Format.RESET
+            )
+        elif state == "unassigned":
+            message = "%s %s%s%s - %s%s%s unassigned %s" % (
+                self.prefix,
+                Format.ORANGE, repo, Format.RESET,
+                Format.BLUE, body['sender']['login'], Format.RESET,
+                info
+            )
+        elif state == "labeled":
+            message = "%s %s%s%s - %s%s%s added label %s%s%s to %s" % (
+                self.prefix,
+                Format.ORANGE, repo, Format.RESET,
+                Format.BLUE, body['sender']['login'], Format.RESET,
+                Format.GREY, body['label']['name'], Format.RESET,
+                info
+            )
+        elif state == "unlabeled":
+            message = "%s %s%s%s - %s%s%s removed label %s%s%s from %s" % (
+                self.prefix,
+                Format.ORANGE, repo, Format.RESET,
+                Format.BLUE, body['sender']['login'], Format.RESET,
+                Format.GREY, body['label']['name'], Format.RESET,
+                info
+            )
+        elif state == "opened":
+            message = "%s %s%s%s - %s%s%s opened %s" % (
+                self.prefix,
+                Format.ORANGE, repo, Format.RESET,
+                Format.BLUE, body['sender']['login'], Format.RESET,
+                info
+            )
+        elif state == "closed":
+            message = "%s %s%s%s - %s%s%s closed %s" % (
+                self.prefix,
+                Format.ORANGE, repo, Format.RESET,
+                Format.BLUE, body['sender']['login'], Format.RESET,
+                info
+            )
+        elif state == "reopened":
+            message = "%s %s%s%s - %s%s%s re-opened %s" % (
+                self.prefix,
+                Format.ORANGE, repo, Format.RESET,
+                Format.BLUE, body['sender']['login'], Format.RESET,
+                info
+            )
+
+        self.bot.message("#" + target_channel, message)
+
+    @coroutine
+    def handle_issue_comment(self, target_channel, body):
+        repo = body['repository']['full_name']
+        info = "%s#%d: %s%s" % (Format.GREEN, body['issue']['number'], body['issue']['title'], Format.RESET)
+
+        message = "%s %s%s%s - %s%s%s commented on %s" % (
+            self.prefix, Format.ORANGE, repo, Format.RESET,
+            Format.BLUE, body['sender']['login'], Format.RESET,
+            info
+        )
+
+        self.bot.message("#" + target_channel, message)
