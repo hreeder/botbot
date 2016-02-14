@@ -79,7 +79,7 @@ class GithubHandler(RequestHandler):
         repo = body['repository']['full_name']
         pr_info = "Pull Request %s#%d: %s%s" % (Format.GREEN, body['pull_request']['number'], body['pull_request']['title'], Format.RESET)
         action = body['action']
-        if action == "closed" and body['merged']:
+        if action == "closed" and body['pull_request']['merged']:
             state = "merged"
         else:
             state = action
