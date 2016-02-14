@@ -142,7 +142,7 @@ class GithubHandler(RequestHandler):
                 Format.ORANGE, repo, Format.RESET,
                 Format.BLUE, body['sender']['login'], Format.RESET,
                 pr_info
-            ),
+            )
         elif state == "merged":
             message = "%s %s%s%s - %s%s%s merged %s" % (
                 self.prefix,
