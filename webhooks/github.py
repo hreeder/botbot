@@ -73,3 +73,54 @@ class GithubHandler(RequestHandler):
             Format.BLUE, repo, Format.RESET,
             colour[body['state']], what_happened, Format.RESET
         ))
+
+    @coroutine
+    def handle_pull_request(self, target_channel, body):
+        print(body)
+        repo = body['repository']['full_name']
+        pr_info = "Pull Request %s#%d: %s%s" % (Format.GREEN, body['pull_request']['number'], body['pull_request']['title'], Format.RESET)
+        action = body['action']
+        if action == "closed" and body['merged']:
+            state = "merged"
+        else:
+            state = action
+
+        message = {
+            "assigned": "%s %s%s%s - %s%s%s assigned %s to %s%s%s" % (
+                self.prefix,
+                Format.ORANGE, repo, Format.RESET,
+                Format.BLUE, body['sender']['login'], Format.RESET,
+                pr_info,
+                Format.BLUE, body['pull_request']['assignee']['login'], Format.RESET
+            ),
+            "unassigned": "%s %s%s%s - %s%s%s unassigned %s" % (
+                self.prefix,
+                Format.ORANGE, repo, Format.RESET,
+                Format.BLUE, body['sender']['login'], Format.RESET,
+                pr_info
+            ),
+            "labeled": "",
+            "unlabeled": "",
+            "opened": "%s %s%s%s - %s%s%s opened %s" % (
+                self.prefix,
+                Format.ORANGE, repo, Format.RESET,
+                Format.BLUE, body['sender']['login'], Format.RESET,
+                pr_info
+            ),
+            "closed": "%s %s%s%s - %s%s%s closed %s" % (
+                self.prefix,
+                Format.ORANGE, repo, Format.RESET,
+                Format.BLUE, body['sender']['login'], Format.RESET,
+                pr_info
+            ),
+            "reopened": "",
+            "synchronize": "",
+            "merged": "%s %s%s%s - %s%s%s merged %s" % (
+                self.prefix,
+                Format.ORANGE, repo, Format.RESET,
+                Format.BLUE, body['sender']['login'], Format.RESET,
+                pr_info
+            )
+        }
+
+        self.bot.message("#" + target_channel, message[state])
