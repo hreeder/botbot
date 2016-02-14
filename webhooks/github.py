@@ -25,8 +25,8 @@ class GithubHandler(RequestHandler):
 
         target_channel = self.get_argument("channel", None, None)
 
-        logger.debug("Github Hook Type: %s" % hook_type)
-        logger.debug("Body: %s" % body_text)
+        # logger.debug("Github Hook Type: %s" % hook_type)
+        # logger.debug("Body: %s" % body_text)
 
         method_name = "handle_%s" % (hook_type.lower().replace(" ", "_"))
 
@@ -76,7 +76,6 @@ class GithubHandler(RequestHandler):
 
     @coroutine
     def handle_pull_request(self, target_channel, body):
-        print(body)
         repo = body['repository']['full_name']
         pr_info = "Pull Request %s#%d: %s%s" % (Format.GREEN, body['pull_request']['number'], body['pull_request']['title'], Format.RESET)
         action = body['action']
@@ -85,42 +84,71 @@ class GithubHandler(RequestHandler):
         else:
             state = action
 
-        message = {
-            "assigned": "%s %s%s%s - %s%s%s assigned %s to %s%s%s" % (
+        if state == "assigned":
+            message = "%s %s%s%s - %s%s%s assigned %s to %s%s%s" % (
                 self.prefix,
                 Format.ORANGE, repo, Format.RESET,
                 Format.BLUE, body['sender']['login'], Format.RESET,
                 pr_info,
                 Format.BLUE, body['pull_request']['assignee']['login'], Format.RESET
-            ),
-            "unassigned": "%s %s%s%s - %s%s%s unassigned %s" % (
-                self.prefix,
-                Format.ORANGE, repo, Format.RESET,
-                Format.BLUE, body['sender']['login'], Format.RESET,
-                pr_info
-            ),
-            "labeled": "",
-            "unlabeled": "",
-            "opened": "%s %s%s%s - %s%s%s opened %s" % (
-                self.prefix,
-                Format.ORANGE, repo, Format.RESET,
-                Format.BLUE, body['sender']['login'], Format.RESET,
-                pr_info
-            ),
-            "closed": "%s %s%s%s - %s%s%s closed %s" % (
-                self.prefix,
-                Format.ORANGE, repo, Format.RESET,
-                Format.BLUE, body['sender']['login'], Format.RESET,
-                pr_info
-            ),
-            "reopened": "",
-            "synchronize": "",
-            "merged": "%s %s%s%s - %s%s%s merged %s" % (
+            )
+        elif state == "unassigned":
+            message = "%s %s%s%s - %s%s%s unassigned %s" % (
                 self.prefix,
                 Format.ORANGE, repo, Format.RESET,
                 Format.BLUE, body['sender']['login'], Format.RESET,
                 pr_info
             )
-        }
+        elif state == "labeled":
+            message = "%s %s%s%s - %s%s%s added label %s%s%s to %s" % (
+                self.prefix,
+                Format.ORANGE, repo, Format.RESET,
+                Format.BLUE, body['sender']['login'], Format.RESET,
+                Format.GREY, body['label']['name'], Format.RESET,
+                pr_info
+            )
+        elif state == "unlabeled":
+            message = "%s %s%s%s - %s%s%s removed label %s%s%s from %s" % (
+                self.prefix,
+                Format.ORANGE, repo, Format.RESET,
+                Format.BLUE, body['sender']['login'], Format.RESET,
+                Format.GREY, body['label']['name'], Format.RESET,
+                pr_info
+            )
+        elif state == "opened":
+            message = "%s %s%s%s - %s%s%s opened %s" % (
+                self.prefix,
+                Format.ORANGE, repo, Format.RESET,
+                Format.BLUE, body['sender']['login'], Format.RESET,
+                pr_info
+            )
+        elif state == "closed":
+            message = "%s %s%s%s - %s%s%s closed %s" % (
+                self.prefix,
+                Format.ORANGE, repo, Format.RESET,
+                Format.BLUE, body['sender']['login'], Format.RESET,
+                pr_info
+            )
+        elif state == "reopened":
+            message = "%s %s%s%s - %s%s%s re-opened %s" % (
+                self.prefix,
+                Format.ORANGE, repo, Format.RESET,
+                Format.BLUE, body['sender']['login'], Format.RESET,
+                pr_info
+            )
+        elif state == "synchronize":
+            message = "%s %s%s%s - %s%s%s pushed new commits to %s" % (
+                self.prefix,
+                Format.ORANGE, repo, Format.RESET,
+                Format.BLUE, body['sender']['login'], Format.RESET,
+                pr_info
+            ),
+        elif state == "merged":
+            message = "%s %s%s%s - %s%s%s merged %s" % (
+                self.prefix,
+                Format.ORANGE, repo, Format.RESET,
+                Format.BLUE, body['sender']['login'], Format.RESET,
+                pr_info
+            )
 
-        self.bot.message("#" + target_channel, message[state])
+        self.bot.message("#" + target_channel, message)
