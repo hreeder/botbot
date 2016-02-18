@@ -28,3 +28,10 @@ def part(bot, sender, args):
             message = args[1]
         if bot.in_channel(args[0]):
             bot.part(args[0], message=message)
+
+
+def message(bot, sender, args):
+    """Owner Command: Sends a message to a channel as the bot"""
+    if sender == bot.config['System']['owner'] and args and args[0].startswith("#"):
+        message = " ".join(args[1:])
+        bot.message(args[0], message)
