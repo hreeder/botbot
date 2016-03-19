@@ -35,3 +35,21 @@ def message(bot, sender, args):
     if sender == bot.config['System']['owner'] and args and args[0].startswith("#"):
         message = " ".join(args[1:])
         bot.message(args[0], message)
+
+
+def channel_ignore(bot, channel, sender, args):
+    ignore(bot, sender, args)
+
+
+def ignore(bot, sender, args):
+    if sender == bot.config['System']['owner'] and args:
+        bot.ignored_users.add(args[0])
+
+
+def channel_unignore(bot, channel, sender, args):
+    unignore(bot, sender, args)
+
+
+def unignore(bot, sender, args):
+    if sender == bot.config['System']['owner'] and args:
+        bot.ignored_users.remove(args[0])

@@ -22,7 +22,9 @@ commands = {
     "subscriptions": broadcasts.list_topics,
     "subscribe": broadcasts.subscribe,
     "unsubscribe": broadcasts.unsubscribe,
-    "bunny": bunny.bunny_command
+    "bunny": bunny.bunny_command,
+    "ignore": internals.channel_ignore,
+    "unignore": internals.channel_unignore
 }
 
 # PM Commands should accept the following arguments
@@ -34,5 +36,7 @@ pm_commands = {
     "join": internals.join,
     "part": internals.part,
     "msg": internals.message,
-    "slacksetavatar": slack.slacksetavatar
+    "slacksetavatar": slack.slacksetavatar,
+    "ignore": internals.ignore,
+    "unignore": internals.unignore
 }

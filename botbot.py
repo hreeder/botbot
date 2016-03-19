@@ -25,6 +25,7 @@ class BotBot(pydle.Client):
         self.commands = {}
         self.pm_commands = {}
         self.channel_hooks = []
+        self.ignored_users = set()
 
         self.event_loop = EventLoop()
 
@@ -50,7 +51,7 @@ class BotBot(pydle.Client):
             logger.debug("Command: " + command)
             logger.debug("Args: " + str(args))
 
-            if command in self.commands.keys():
+            if command in self.commands.keys() and sender not in self.ignored_users:
                 self.commands[command](self, channel, sender, args)
                 return
 
