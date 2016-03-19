@@ -10,4 +10,4 @@ def bunny_command(bot, channel, sender, args):
         except ValueError:
             pass
     data = requests.get(uri % part).json()
-    bot.message(channel, "https://bunnies.io/#%s - %s" % (data['id'] ,data['media']['gif'])
+    bot.message(channel, "https://bunnies.io/#%s - %s" % (data['id'], data['media']['gif']))
