@@ -99,5 +99,5 @@ if __name__ == "__main__":
     http_server = HTTPServer(botbot_webhooks_app, io_loop=client.event_loop.io_loop)
     http_server.listen(config['Webhooks']['port'], config['Webhooks']['host'])
 
-    client.connect(config['IRC']['host'], int(config['IRC']['port']))
+    client.connect(config['IRC']['host'], int(config['IRC']['port']), tls=config.getboolean('IRC', 'tls'))
     client.handle_forever()

@@ -5,6 +5,7 @@ connection_string = sqlite:///db.sqlite
 [IRC]
 host = chat.freenode.net
 port = 6667
+tls = false
 channel = #botbot
 nick = botbot
 trigger = $
