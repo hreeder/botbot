@@ -24,7 +24,8 @@ commands = {
     "unsubscribe": broadcasts.unsubscribe,
     "bunny": bunny.bunny_command,
     "ignore": internals.channel_ignore,
-    "unignore": internals.channel_unignore
+    "unignore": internals.channel_unignore,
+    "colours": internals.channel_test_string
 }
 
 # PM Commands should accept the following arguments
@@ -38,5 +39,6 @@ pm_commands = {
     "msg": internals.message,
     "slacksetavatar": slack.slacksetavatar,
     "ignore": internals.ignore,
-    "unignore": internals.unignore
+    "unignore": internals.unignore,
+    "colours": internals.test_string
 }

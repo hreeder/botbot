@@ -1,3 +1,6 @@
+from util import Format
+
+
 def die(bot, sender, args):
     """Owner Command: Causes the bot to disconnect"""
     if sender == bot.config['System']['owner'] and args and args[0] == bot.config['System']['die_password']:
@@ -53,3 +56,12 @@ def channel_unignore(bot, channel, sender, args):
 def unignore(bot, sender, args):
     if sender == bot.config['System']['owner'] and args:
         bot.ignored_users.remove(args[0])
+
+
+def channel_test_string(bot, channel, sender, args):
+    if sender == bot.config['System']['owner']:
+        test_string(bot, channel, args)
+
+
+def test_string(bot, sender, args):
+    bot.message(sender, Format.TEST_STRING)
