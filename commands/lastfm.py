@@ -1,10 +1,27 @@
 import pylast
 
+from redis import StrictRedis
+
+
+def set_np_user(bot, sender, username):
+    redis = StrictRedis.from_url(bot.config['System']['redis_url'])
+    redis.set("{}lastfm-{}".format(bot.config['System']['redis_prefix'], sender), username)
+
+
+def get_np_user(bot, sender):
+    redis = StrictRedis.from_url(bot.config['System']['redis_url'])
+    return redis.get("{}lastfm-{}".format(bot.config['System']['redis_prefix'], sender))
+
 
 def np(bot, channel, sender, args):
     """Now Playing - Gets the currently scrobbling track for a given last.fm user. Usage: np thebigredbutton"""
+    from_redis = get_np_user(bot, sender)
     if args:
         user = args[0].strip()
+        if len(args) > 1 and args[1] == "--save":
+            set_np_user(bot, sender, user)
+    elif from_redis:
+        user = from_redis.decode('utf-8')
     else:
         user = sender
     network = pylast.LastFMNetwork(
