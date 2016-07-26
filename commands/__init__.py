@@ -10,6 +10,7 @@ commands = {
     "slackwhois": slack.slackwhois,
     "about": help.bot_info,
     "time": time.time,
+    "weather": time.weather,
     "karma": karma.karma_command,
     "top5": karma.top_karma,
     "last5": karma.lowest_karma,

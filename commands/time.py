@@ -54,7 +54,7 @@ def time(bot, channel, sender, args):
     }
 
     time_uri = time_endpoint + "?" + urllib.parse.urlencode(time_args)
-    time_response = requests.get(time_uri).text
+    time_response = requests.get(time_endpoint, params=time_args).text
     localtime = json.loads(time_response)
 
     if localtime[u'status'] == u'FAIL':
@@ -68,3 +68,30 @@ def time(bot, channel, sender, args):
                                                                                 geocoded[u'formatted_address'],
                                                                                 tz,
                                                                                 timezone[u'timeZoneName']))
+
+def weather(bot, channel, sender, args):
+        weather_endpoint = "http://api.openweathermap.org/data/2.5/weather"
+
+        geocoded = geocode(bot, channel, sender, args)
+        if type(geocoded) != dict:
+            bot.message(channel, geocoded)
+        latlng = geocoded[u'geometry'][u'location']
+
+        args = {
+            'lat': str(latlng[u'lat']),
+            'lon': str(latlng[u'lng']),
+            'units': 'metric',
+            'APPID': bot.config['OpenWeatherMap']['key']
+        }
+
+        # uri = weather_endpoint + "?" + urllib.urlencode(args)
+        response = requests.get(weather_endpoint, params=args)
+        weather = response.json()
+
+        bot.message(channel, "%s: The current weather in %s: %s || %s°C || Wind: %s m/s || Clouds: %s%%" % (sender,
+                                                                                                            geocoded[u'formatted_address'],
+                                                                                                            weather['weather'][0]['description'],
+                                                                                                            weather['main']['temp'],
+                                                                                                            weather['wind']['speed'],
+                                                                                                            weather['clouds']['all']))
+
