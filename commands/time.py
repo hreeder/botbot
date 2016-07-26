@@ -53,7 +53,6 @@ def time(bot, channel, sender, args):
         'format': 'json'
     }
 
-    time_uri = time_endpoint + "?" + urllib.parse.urlencode(time_args)
     time_response = requests.get(time_endpoint, params=time_args).text
     localtime = json.loads(time_response)
 
@@ -68,6 +67,7 @@ def time(bot, channel, sender, args):
                                                                                 geocoded[u'formatted_address'],
                                                                                 tz,
                                                                                 timezone[u'timeZoneName']))
+
 
 def weather(bot, channel, sender, args):
         weather_endpoint = "http://api.openweathermap.org/data/2.5/weather"
@@ -84,7 +84,6 @@ def weather(bot, channel, sender, args):
             'APPID': bot.config['OpenWeatherMap']['key']
         }
 
-        # uri = weather_endpoint + "?" + urllib.urlencode(args)
         response = requests.get(weather_endpoint, params=args)
         weather = response.json()
 
@@ -94,4 +93,3 @@ def weather(bot, channel, sender, args):
                                                                                                             weather['main']['temp'],
                                                                                                             weather['wind']['speed'],
                                                                                                             weather['clouds']['all']))
-
