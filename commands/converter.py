@@ -16,3 +16,5 @@ def convert(bot, channel, sender, args):
         bot.message(channel, "{} {} || {} {}".format(amount, unit_from, to.magnitude, to.units))
     except pint.errors.UndefinedUnitError as ex:
         bot.message(channel, str(ex))
+    except pint.errors.DimensionalityError as ex:
+        bot.message(channel, str(ex))
