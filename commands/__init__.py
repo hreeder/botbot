@@ -1,4 +1,4 @@
-from . import internals, help, lastfm, whereis, slack, time, karma, broadcasts, bunny, urban, excuses
+from . import internals, help, lastfm, whereis, slack, time, karma, broadcasts, bunny, urban, excuses, converter
 
 # Commands should all accept the following arguments
 # bot, channel, sender_nickname, arguments
@@ -28,7 +28,8 @@ commands = {
     "unignore": internals.channel_unignore,
     "colours": internals.channel_test_string,
     "ud": urban.ud,
-    "excuse": excuses.excuseme
+    "excuse": excuses.excuseme,
+    "conv": converter.convert
 }
 
 # PM Commands should accept the following arguments
