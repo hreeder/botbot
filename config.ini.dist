@@ -1,40 +1,39 @@
-[Database]
-# Connection String Format: http://docs.sqlalchemy.org/en/rel_0_9/core/engines.html
-connection_string = sqlite:///db.sqlite
-
 [IRC]
-host = chat.freenode.net
-port = 6667
-tls = false
-channel = #botbot
-nick = botbot
-trigger = $
+host = your.irc.host
+port = 6697
+channel = #channel
+nick = bot
+tls = True
+trigger = !
 
 [Webhooks]
 host = 0.0.0.0
-port = 8080
+port = 4434
 
 [System]
 debug = yes
-die_password = please
-owner = tbrb
+die_password = a_password
+owner = your_name
 repo = https://github.com/hreeder/botbot
-redis_url = redis://localhost:6379/0
+redis_url = redis://localhost:6378/0
 redis_prefix = botbot-
-command_blacklist = commandname anothercommand
-pm_command_blacklist = pmcommand
-hook_blacklist = slack
+command_blacklist = slackwho
+pm_command_blacklist =
+hook_blacklist =
 
 [Slack]
-listen = #channel #otherchannel
-api_key = abcdef
-webhook = https://hooks.slack.com/services/abcdef
-channel_target = #slackchannel
-otherchannel_target = #otherslackchannel
+listen = #one #two
+api_key = xoxp-your-api-key
+webhook = https://hooks.slack.com/services/blah/blah/blah
+one_target = #general
+two_target = #tardis
 
 [LastFM]
-key = lastfmkey
-secret = lastfmsecret
+key = keykeykeykeykey
+secret = secretsecretsecret
 
 [Yandex]
-translate_key = trnsl.1.1....
+translate_key = trnsl.1.1.blah.blah.blah
+
+[OpenWeatherMap]
+key = keykeykeykeykey
