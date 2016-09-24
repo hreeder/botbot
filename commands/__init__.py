@@ -1,4 +1,4 @@
-from . import internals, help, lastfm, whereis, slack, time,karma, broadcasts, bunny, urban, excuses, converter, \
+from . import internals, help, lastfm, whereis, slack, time, karma, broadcasts, bunny, urban, excuses, converter, \
     buttmaster
 
 # Commands should all accept the following arguments
