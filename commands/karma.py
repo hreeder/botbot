@@ -6,7 +6,10 @@ from redis import StrictRedis
 def karma_command(bot, channel, sender, args):
     redis = StrictRedis.from_url(bot.config['System']['redis_url'])
     term = " ".join(args).lower() if args else sender
-    amount = int(redis.hget(bot.config['System']['redis_prefix'] + "karma", term))
+    try:
+        amount = int(redis.hget(bot.config['System']['redis_prefix'] + "karma", term))
+    except TypeError:
+        amount = "no"
     bot.message(channel, "%s has %s karma" % (term, amount))
 
 
