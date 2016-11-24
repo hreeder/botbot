@@ -1,4 +1,5 @@
-from . import internals, help, lastfm, whereis, slack, time, karma, broadcasts, bunny, urban, excuses, converter
+from . import internals, help, lastfm, whereis, slack, time, karma, broadcasts, bunny, urban, excuses, converter, \
+    buttmaster
 
 # Commands should all accept the following arguments
 # bot, channel, sender_nickname, arguments
@@ -29,7 +30,9 @@ commands = {
     "colours": internals.channel_test_string,
     "ud": urban.ud,
     "excuse": excuses.excuseme,
-    "conv": converter.convert
+    "conv": converter.convert,
+    "buttmaster": buttmaster.buttmaster,
+    "butts": buttmaster.butts
 }
 
 # PM Commands should accept the following arguments
