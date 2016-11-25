@@ -33,8 +33,8 @@ class RSSCallback:
                 kwargs['etag'] = details['last_etag']
 
             if "last_modified" in details:
-                kwargs['modified'] = data['last_modified']
-            
+                kwargs['modified'] = details['last_modified']
+
             f = feedparser.parse(details['url'], **kwargs)
             if f.status != 304:
                 # New Entry!
