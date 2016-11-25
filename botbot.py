@@ -8,6 +8,9 @@ import webhooks
 from configparser import ConfigParser
 from pydle.async import EventLoop
 from tornado.httpserver import HTTPServer
+from tornado.ioloop import PeriodicCallback
+
+from periodic import tasks
 
 logger = logging.getLogger("BotBot-Bot")
 
@@ -98,6 +101,9 @@ if __name__ == "__main__":
     botbot_webhooks_app._ctx = client
     http_server = HTTPServer(botbot_webhooks_app, io_loop=client.event_loop.io_loop)
     http_server.listen(config['Webhooks']['port'], config['Webhooks']['host'])
+
+    [task.setup(client) for task in tasks]
+    [PeriodicCallback(task.callback, task.callback_time, io_loop=client.event_loop.io_loop).start() for task in tasks]
 
     client.connect(config['IRC']['host'], int(config['IRC']['port']), tls=config.getboolean('IRC', 'tls'))
     client.handle_forever()
