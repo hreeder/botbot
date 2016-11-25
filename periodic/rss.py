@@ -19,14 +19,23 @@ class RSSCallback:
             }
 
             f = feedparser.parse(data['url'])
-            data['last_etag'] = f.etag
-            data['last_modified'] = f.modified
+            if "etag" in f:
+                data['last_etag'] = f.etag
+            if "modified" in f:
+                data['last_modified'] = f.modified
 
             self.feeds[feedname] = data
 
     def callback(self):
         for key, details in self.feeds.items():
-            f = feedparser.parse(details['url'], etag=details['last_etag'], modified=details['last_modified'])
+            kwargs = {}
+            if "last_etag" in details:
+                kwargs['etag'] = details['last_etag']
+
+            if "last_modified" in details:
+                kwargs['modified'] = data['last_modified']
+            
+            f = feedparser.parse(details['url'], **kwargs)
             if f.update_status != 304:
                 # New Entry!
                 for channel in details['target_channels']:
