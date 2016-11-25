@@ -26,7 +26,7 @@ class RSSCallback:
 
     def callback(self):
         for key, details in self.feeds.items():
-            f = feedparser.parse(details['url'], etag=details['last_etag'], modified=data['last_modified'])
+            f = feedparser.parse(details['url'], etag=details['last_etag'], modified=details['last_modified'])
             if f.update_status != 304:
                 # New Entry!
                 for channel in details['target_channels']:
