@@ -45,3 +45,8 @@ class RSSCallback:
                         f.entries[0].title,
                         f.entries[0].link
                     ))
+                
+                if "etag" in f:
+                    details['last_etag'] = f.etag
+                if "modified" in f:
+                    details['last_modified'] = f.modified
