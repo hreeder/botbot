@@ -36,7 +36,7 @@ class RSSCallback:
                 kwargs['modified'] = data['last_modified']
             
             f = feedparser.parse(details['url'], **kwargs)
-            if f.update_status != 304:
+            if f.status != 304:
                 # New Entry!
                 for channel in details['target_channels']:
                     self.bot.message(channel, "{} {}: {} ({})".format(
