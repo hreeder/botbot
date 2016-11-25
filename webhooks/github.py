@@ -51,7 +51,7 @@ class GithubHandler(RequestHandler):
         self.bot.message("#" + target_channel, "%s %s%s%s has pushed %s%d%s commit%s to %s%s%s" % (
             self.prefix,
             Format.BLUE, who, Format.RESET,
-            Format.YELLOW, len(commits), Format.RESET,
+            Format.TEAL, len(commits), Format.RESET,
             commit_suffix,
             Format.GREEN, repo, Format.RESET
         ))
@@ -65,7 +65,7 @@ class GithubHandler(RequestHandler):
             "success": Format.GREEN,
             "failure": Format.RED,
             "error": Format.RED,
-            "pending": Format.YELLOW
+            "pending": Format.TEAL
         }
 
         self.bot.message("#" + target_channel, "%s %s%s%s - %s%s%s" % (
