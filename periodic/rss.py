@@ -1,5 +1,10 @@
 import feedparser
+import logging
+import time
 from util import Format
+
+
+logger = logging.getLogger("BotBot-RSS")
 
 
 class RSSCallback:
@@ -15,7 +20,9 @@ class RSSCallback:
         for feedname in self.bot.config['Feeds']['active'].split():
             data = {
                 "url": self.bot.config['Feeds']["{}_url".format(feedname)],
-                "target_channels": self.bot.config['Feeds']["{}_channels".format(feedname)].split()
+                "target_channels": self.bot.config['Feeds']["{}_channels".format(feedname)].split(),
+                "method": self.bot.config['Feeds']['{}_method'.format(feedname)],
+                "checked": time.time(),
             }
 
             f = feedparser.parse(data['url'])
@@ -24,29 +31,64 @@ class RSSCallback:
             if "modified" in f:
                 data['last_modified'] = f.modified
 
+            title = f.feed.title
+            try:
+                title = self.bot.config['Feeds']['{}_title_override'.format(feedname)]
+            except:
+                pass
+
+            data['title'] = title
+
             self.feeds[feedname] = data
 
     def callback(self):
         for key, details in self.feeds.items():
-            kwargs = {}
-            if "last_etag" in details:
-                kwargs['etag'] = details['last_etag']
+            etag = None
+            modified = None
+            logger.debug("Checking Feed: {}. Last Checked: {}.".format(key, details['checked']))
 
-            if "last_modified" in details:
-                kwargs['modified'] = details['last_modified']
+            if "last_etag" in details and details['method'] in ["any", "etag"]:
+                etag = details['last_etag']
 
-            f = feedparser.parse(details['url'], **kwargs)
+            if "last_modified" in details and details['method'] in ["any", "modified"]:
+                modified = details['last_modified']
+
+            logger.debug("\tETag: {}, Modified: {}".format(etag, modified))
+
+            f = feedparser.parse(details['url'], etag=etag, modified=modified)
+            logger.debug("\tStatus: {}".format(f.status))
+
+            new_entry = False
             if f.status != 304:
-                # New Entry!
-                for channel in details['target_channels']:
-                    self.bot.message(channel, "{} {}: {} ({})".format(
-                        self.prefix,
-                        f.feed.title,
-                        f.entries[0].title,
-                        f.entries[0].link
-                    ))
+                for entry in f.entries:
+                    if time.mktime(entry.updated_parsed) > details['checked']:
+                        logger.debug("\tEntry: {}. New? {} - entry: {}, checked: {}".format(entry.title, time.mktime(entry.updated_parsed) > details['checked'], time.mktime(entry.updated_parsed), details['checked']))
+                        new_entry = True
 
+            if f.status != 304 and new_entry:
                 if "etag" in f:
-                    details['last_etag'] = f.etag
+                    logger.debug("\tOld Etag: {}".format(etag))
+                    logger.debug("\tNew Etag: {}".format(f.etag))
+
                 if "modified" in f:
-                    details['last_modified'] = f.modified
+                    logger.debug("\tOld Modified: {}".format(modified))
+                    logger.debug("\tNew Modified: {}".format(f.modified))
+
+                # New Entr[y|ies]
+                for entry in f.entries:
+                    if time.mktime(entry.updated_parsed) > details['checked']:
+                        for channel in details['target_channels']:
+                            self.bot.message(channel, "{} {}: {} ({})".format(
+                                self.prefix,
+                                details['title'],
+                                entry.title,
+                                entry.link
+                            ))
+
+                # store the updated etag / modified
+                if "etag" in f:
+                    self.feeds[key]['last_etag'] = f.etag
+                if "modified" in f:
+                    self.feeds[key]['last_modified'] = f.modified
+
+            self.feeds[key]['checked'] = time.time()
