@@ -35,6 +35,7 @@ class RSSCallback:
                 seen = set()
                 for entry in f.entries:
                     seen.add(entry)
+                data['seen'] = seen
 
             title = f.feed.title
             try:
