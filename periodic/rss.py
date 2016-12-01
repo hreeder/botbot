@@ -31,6 +31,11 @@ class RSSCallback:
             if "modified" in f:
                 data['last_modified'] = f.modified
 
+            if data['method'] == "hash":
+                seen = set()
+                for entry in f.entries:
+                    seen.add(entry)
+
             title = f.feed.title
             try:
                 title = self.bot.config['Feeds']['{}_title_override'.format(feedname)]
@@ -58,12 +63,18 @@ class RSSCallback:
             f = feedparser.parse(details['url'], etag=etag, modified=modified)
             logger.debug("\tStatus: {}".format(f.status))
 
-            new_entry = False
-            if f.status != 304:
+            new_entry = []
+            if f.status != 304 and details['method'] not in ["hash"]:
                 for entry in f.entries:
                     if time.mktime(entry.updated_parsed) > details['checked']:
                         logger.debug("\tEntry: {}. New? {} - entry: {}, checked: {}".format(entry.title, time.mktime(entry.updated_parsed) > details['checked'], time.mktime(entry.updated_parsed), details['checked']))
-                        new_entry = True
+                        new_entry.append(entry)
+
+            if details['method'] in ["hash"]:
+                for entry in f.entries:
+                    if entry not in details['seen']:
+                        new_entry.append(entry)
+                        details['seen'].add(entry)
 
             if f.status != 304 and new_entry:
                 if "etag" in f:
@@ -75,15 +86,14 @@ class RSSCallback:
                     logger.debug("\tNew Modified: {}".format(f.modified))
 
                 # New Entr[y|ies]
-                for entry in f.entries:
-                    if time.mktime(entry.updated_parsed) > details['checked']:
-                        for channel in details['target_channels']:
-                            self.bot.message(channel, "{} {}: {} ({})".format(
-                                self.prefix,
-                                details['title'],
-                                entry.title,
-                                entry.link
-                            ))
+                for entry in new_entry:
+                    for channel in details['target_channels']:
+                        self.bot.message(channel, "{} {}: {} ({})".format(
+                            self.prefix,
+                            details['title'],
+                            entry.title,
+                            entry.link
+                        ))
 
                 # store the updated etag / modified
                 if "etag" in f:
