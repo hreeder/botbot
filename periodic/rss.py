@@ -10,7 +10,7 @@ logger = logging.getLogger("BotBot-RSS")
 class RSSCallback:
     def __init__(self):
         #                    m    s    ms
-        self.callback_time = 15 * 60 * 1000
+        self.callback_time = 1 * 60 * 1000
         self.prefix = "%s[RSS]%s" % (Format.GREEN, Format.RESET)
 
         self.feeds = {}
@@ -34,7 +34,7 @@ class RSSCallback:
             if data['method'] == "hash":
                 seen = set()
                 for entry in f.entries:
-                    seen.add(entry)
+                    seen.add(entry.link)
                 data['seen'] = seen
 
             title = f.feed.title
@@ -73,9 +73,9 @@ class RSSCallback:
 
             if details['method'] in ["hash"]:
                 for entry in f.entries:
-                    if entry not in details['seen']:
+                    if entry.link not in details['seen']:
                         new_entry.append(entry)
-                        details['seen'].add(entry)
+                        self.feeds[key]['seen'].add(entry.link)
 
             if f.status != 304 and new_entry:
                 if "etag" in f:
