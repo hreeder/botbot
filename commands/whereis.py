@@ -49,6 +49,6 @@ def whereis_tbrb(bot, channel, sender, args):
 
 
 def whereis_amy(bot, channel, sender, args):
-    endpoint = "http://rhiaro.co.uk/where?plain=1"
-    data = requests.get(endpoint).text
-    bot.message(channel, data)
+    endpoint = "http://rhiaro.co.uk/where"
+    data = json.loads(requests.get(endpoint).text)
+    bot.message(channel, data['as:summary'] + " - https://rhiaro.co.uk/arrives")
