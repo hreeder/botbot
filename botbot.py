@@ -47,9 +47,9 @@ class BotBot(pydle.Client):
 
     def on_channel_message(self, channel, sender, message):
         if message.startswith(self.trigger):
-            message = message[len(self.trigger):]
-            command = message.split()[0]
-            args = message.split()[1:]
+            message_trigger_removed = message[len(self.trigger):]
+            command = message_trigger_removed.split()[0]
+            args = message_trigger_removed.split()[1:]
 
             logger.debug("Command: " + command)
             logger.debug("Args: " + str(args))
