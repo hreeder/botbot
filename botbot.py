@@ -68,6 +68,14 @@ class BotBot(pydle.Client):
         if command in self.pm_commands.keys():
             self.pm_commands[command](self, sender, args)
 
+    def message(self, channel, msg):
+        if msg.count("\n") > int(self.config["IRC"]["maxlines"]) or len(msg) > int(self.config["IRC"]["maxlen"]):
+            msg = "\n".join(msg.split("\n")[:int(self.config["IRC"]["maxlines"])])
+            msg = msg[:int(self.config["IRC"]["maxlen"])]
+            msg += " [...]"
+
+        super().message(channel, msg)
+
 
 if __name__ == "__main__":
     config = ConfigParser()
