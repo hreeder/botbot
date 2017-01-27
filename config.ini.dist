@@ -5,6 +5,8 @@ channel = #channel
 nick = bot
 tls = True
 trigger = !
+maxlines = 5
+maxlen = 1000
 
 [Webhooks]
 host = 0.0.0.0
