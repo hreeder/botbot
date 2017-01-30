@@ -70,7 +70,7 @@ def reload(bot, channel, sender, args):
     """Owner Command: Reload the bot"""
     if sender == bot.config['System']['owner']:
         bot.load_plugins()
-        bot.message(channel, "Reloaded")
+        bot.message(channel, "Reloaded 👍")
 
 
 @bot.webhook(r"/")
