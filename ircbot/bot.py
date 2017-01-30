@@ -6,6 +6,7 @@ from configparser import ConfigParser
 from functools import partial
 from pluginbase import PluginBase
 from pydle.async import EventLoop
+from tornado.ioloop import PeriodicCallback
 
 from ircbot.webserver import setup_webserver
 
@@ -31,6 +32,7 @@ class BotBot(pydle.Client):
         self.plugin_mgr = None
         self.commands = {}
         self.channel_hooks = []
+        self.periodic_tasks = []
         self.ignored_users = set()
 
         self.event_loop = EventLoop()
@@ -42,6 +44,10 @@ class BotBot(pydle.Client):
         self.commands = {}
         self.plugins = {}
         self.channel_hooks = []
+
+        for task in self.periodic_tasks:
+            task.stop()
+        self.periodic_tasks = []
 
         if self.webapp:
             self.webapp.handlers = []
@@ -95,6 +101,10 @@ class BotBot(pydle.Client):
                 logger.debug("Unable to load plugin {} - {}".format(plugin_name, ex))
                 continue
 
+        [task.setup(self) for task in self.periodic_tasks]
+        self.periodic_tasks = [PeriodicCallback(task.callback, task.callback_time, io_loop=self.event_loop.io_loop) for task in self.periodic_tasks]
+        [task.start() for task in self.periodic_tasks]
+
     def command(self, keyword):
         def decorator(f):
             self.register_command(keyword, f)
@@ -112,7 +122,12 @@ class BotBot(pydle.Client):
         def decorator(cls):
             logger.debug("Registering webapp handler {} at {}".format(cls, path))
             self.webapp.add_handlers(r".*", [(path, cls)])
-            # self.webapp._ctx = self
+            return cls
+        return decorator
+
+    def periodic(self):
+        def decorator(cls):
+            self.register_periodic(cls)
             return cls
         return decorator
 
@@ -122,6 +137,10 @@ class BotBot(pydle.Client):
 
     def register_hook(self, channel_hook):
         self.channel_hooks.append(channel_hook)
+
+    def register_periodic(self, clazz):
+        logger.debug("Registering periodic callback: {}".format(clazz))
+        self.periodic_tasks.append(clazz())
 
     def on_connect(self):
         for channel in self.join_channels:

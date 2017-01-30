@@ -1,7 +1,6 @@
 import logging
-logging.basicConfig(level=logging.DEBUG)
-
 from ircbot import bot
+logging.basicConfig(level=logging.DEBUG)
 
 
 if __name__ == "__main__":

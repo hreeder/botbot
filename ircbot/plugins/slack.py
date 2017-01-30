@@ -73,6 +73,7 @@ def slacksetavatar(bot, sender, args):
             bot.message(sender, "Sorry, that wasn't recognised. I can support setting an email for gravatar "
                         "or a direct url for an avatar")
 
+
 @bot.hook()
 def message_hook(bot, channel, sender, message):
     listen_on = bot.config['Slack']['listen'].split()

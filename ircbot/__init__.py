@@ -8,3 +8,5 @@ logger = logging.getLogger(__name__)
 logger.debug("Creating BotBot")
 bot = BotBot()
 logger.debug("BotBot Created")
+
+__all__ = ['bot', 'Format']
