@@ -7,11 +7,12 @@ import json
 
 from tornado.gen import coroutine
 from tornado.web import RequestHandler
-from util import Format
+from ircbot import bot, Format
 
 logger = logging.getLogger(__name__)
 
 
+@bot.webhook("/github")
 class GithubHandler(RequestHandler):
     def initialize(self):
         self.prefix = "%s[Github]%s" % (Format.GREEN, Format.RESET)

@@ -1,6 +1,8 @@
+from ircbot import bot
 from redis import StrictRedis
 
 
+@bot.command('broadcast-topic-create')
 def create_topic(bot, channel, sender, args):
     topic = args[0]
     redis = StrictRedis.from_url(bot.config['System']['redis_url'])
@@ -15,6 +17,7 @@ def create_topic(bot, channel, sender, args):
         bot.message(channel, "%s: The topic '%s' already exists, and is owned by %s." % (sender, topic, owner))
 
 
+@bot.command('broadcast-topic-destroy')
 def destroy_topic(bot, channel, sender, args):
     topic = args[0]
     redis = StrictRedis.from_url(bot.config['System']['redis_url'])
@@ -28,6 +31,7 @@ def destroy_topic(bot, channel, sender, args):
         bot.message(channel, "%s: You are not the owner of the topic '%s' and thus cannot destroy it" % (sender, topic))
 
 
+@bot.command('broadcast-topic-allow')
 def allow_sender(bot, channel, sender, args):
     topic = args[0]
     redis = StrictRedis.from_url(bot.config['System']['redis_url'])
@@ -38,6 +42,7 @@ def allow_sender(bot, channel, sender, args):
         bot.message(channel, "%s: You are not the owner of the topic '%s' and cannot add people to the senders list" % (sender, topic))
 
 
+@bot.command('broadcast-topic-revoke')
 def disallow_sender(bot, channel, sender, args):
     topic = args[0]
     redis = StrictRedis.from_url(bot.config['System']['redis_url'])
@@ -48,6 +53,7 @@ def disallow_sender(bot, channel, sender, args):
         bot.message(channel, "%s: You are not the owner of the topic '%s' and cannot add people to the senders list" % (sender, topic))
 
 
+@bot.command('broadcast-topic-transfer')
 def transfer_topic(bot, channel, sender, args):
     topic = args[0]
     redis = StrictRedis.from_url(bot.config['System']['redis_url'])
@@ -58,6 +64,7 @@ def transfer_topic(bot, channel, sender, args):
         bot.message(channel, "%s: You are not the owner of the topic '%s' and cannot transfer ownership of it." % (sender, topic))
 
 
+@bot.command('subscribe')
 def subscribe(bot, channel, sender, args):
     topic = args[0]
     redis = StrictRedis.from_url(bot.config['System']['redis_url'])
@@ -68,6 +75,7 @@ def subscribe(bot, channel, sender, args):
         bot.message(channel, "%s: You cannot subscribe to a topic that doesn't exist!" % sender)
 
 
+@bot.command('unsubscribe')
 def unsubscribe(bot, channel, sender, args):
     topic = args[0]
     redis = StrictRedis.from_url(bot.config['System']['redis_url'])
@@ -78,6 +86,7 @@ def unsubscribe(bot, channel, sender, args):
         bot.message(channel, "%s: Either that topic does not exist, or you are not a subscriber, and thus cannot unsubscribe from it!" % sender)
 
 
+@bot.command('bc')
 def broadcast(bot, channel, sender, args):
     topic = args[0]
 
@@ -96,6 +105,7 @@ def broadcast(bot, channel, sender, args):
             bot.message(channel, "%s: Cannot send to a topic that doesn't exist!" % sender)
 
 
+@bot.command('subscriptions')
 def list_topics(bot, channel, sender, args):
     redis = StrictRedis.from_url(bot.config['System']['redis_url'])
     subscribed_topics = []

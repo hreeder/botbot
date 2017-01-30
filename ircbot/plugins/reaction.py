@@ -1,6 +1,8 @@
+from ircbot import bot
 from redis import StrictRedis
 
 
+@bot.command('react')
 def react(bot, channel, sender, args):
     redis = StrictRedis.from_url(bot.config['System']['redis_url'])
     term = "_".join(args).lower()
@@ -11,6 +13,7 @@ def react(bot, channel, sender, args):
         pass
 
 
+@bot.command('addreaction')
 def add_reaction(bot, channel, sender, args):
     """ Adds a reaction for a term - usage: $addreaction http://your.url.here your description here """
     redis = StrictRedis.from_url(bot.config['System']['redis_url'])

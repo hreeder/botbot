@@ -3,11 +3,12 @@ import json
 
 from tornado.gen import coroutine
 from tornado.web import RequestHandler
-from util import Format
+from ircbot import bot, Format
 
 logger = logging.getLogger(__name__)
 
 
+@bot.webhook("/libraries")
 class LibrariesHandler(RequestHandler):
     def initialize(self):
         self.prefix = "%s[LibrariesIO]%s" % (Format.GREEN, Format.RESET)
@@ -15,7 +16,6 @@ class LibrariesHandler(RequestHandler):
 
     @coroutine
     def post(self):
-        logger.debug("TEST")
         data = json.loads(self.request.body.decode())
         target_channel = self.get_argument("channel", None, None)
 

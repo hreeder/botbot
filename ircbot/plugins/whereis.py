@@ -2,7 +2,10 @@ import datetime
 import json
 import requests
 
+from ircbot import bot
 
+
+@bot.command('whereis')
 def whereis(bot, channel, sender, args):
     """Where Is - Locates someone"""
     who = args[0].lower()
