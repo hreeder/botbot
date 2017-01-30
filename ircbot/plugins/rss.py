@@ -11,7 +11,7 @@ logger = logging.getLogger("BotBot-RSS")
 class RSSCallback:
     def __init__(self):
         #                    m    s    ms
-        self.callback_time = 1 * 30 * 1000
+        self.callback_time = 15 * 60 * 1000
         self.prefix = "%s[RSS]%s" % (Format.GREEN, Format.RESET)
 
         self.feeds = {}
