@@ -1,6 +1,9 @@
 import pint
 
+from ircbot import bot
 
+
+@bot.command('convert')
 def convert(bot, channel, sender, args):
     """ Converts units from one measurement to another. ie: !conv 100 cm inches """
     amount = float(args[0])

@@ -1,8 +1,10 @@
 import operator
 
+from ircbot import bot
 from redis import StrictRedis
 
 
+@bot.command('buttmaster')
 def buttmaster(bot, channel, sender, args):
     if args and int(args[0]):
         top = get_multi_butts(bot, int(args[0]), True)
@@ -12,6 +14,7 @@ def buttmaster(bot, channel, sender, args):
         bot.message(channel, "The buttmaster is %s, with %s butts" % (top[0], top[1]))
 
 
+@bot.command('butts')
 def butts(bot, channel, sender, args):
     redis = StrictRedis.from_url(bot.config['System']['redis_url'])
     who = " ".join(args).lower() if args else sender
@@ -30,3 +33,15 @@ def get_multi_butts(bot, number, reverse):
     sorted_karma = sorted(all_karma, key=operator.itemgetter(1), reverse=reverse)
 
     return sorted_karma[:number]
+
+
+@bot.hook()
+def message_hook(bot, channel, sender, message):
+    if "butt" in message.lower() and sender not in ['buttbot']:
+        redis = StrictRedis.from_url(bot.config['System']['redis_url'])
+
+        if redis.hexists(bot.config['System']['redis_prefix'] + "buttmaster", sender):
+            current = int(redis.hget(bot.config['System']['redis_prefix'] + "buttmaster", sender))
+            redis.hset(bot.config['System']['redis_prefix'] + "buttmaster", sender, current + 1)
+        else:
+            redis.hset(bot.config['System']['redis_prefix'] + "buttmaster", sender, 1)

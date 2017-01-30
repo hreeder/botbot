@@ -1,5 +1,7 @@
 import random
 
+from ircbot import bot
+
 excuses = [
     'clock speed',
     'solar flares',
@@ -265,5 +267,6 @@ excuses = [
     'Your machine had the fuses in backwards.']
 
 
+@bot.command('excuse')
 def excuseme(bot, channel, sender, args):
     bot.message(channel, random.choice(excuses))

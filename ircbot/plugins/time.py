@@ -4,6 +4,8 @@ import time as pytime
 import urllib
 import requests
 
+from ircbot import bot
+
 
 def geocode(bot, channel, sender, args):
     geocode_endpoint = "http://maps.googleapis.com/maps/api/geocode/json"
@@ -24,6 +26,7 @@ def geocode(bot, channel, sender, args):
     return geocoded
 
 
+@bot.command('time')
 def time(bot, channel, sender, args):
     '''Returns the time in a specified city'''
     timezone_endpoint = "https://maps.googleapis.com/maps/api/timezone/json"
@@ -69,6 +72,7 @@ def time(bot, channel, sender, args):
                                                                                 timezone[u'timeZoneName']))
 
 
+@bot.command('weather')
 def weather(bot, channel, sender, args):
         weather_endpoint = "http://api.openweathermap.org/data/2.5/weather"
 

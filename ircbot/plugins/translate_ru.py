@@ -1,6 +1,8 @@
 import requests
 import json
 
+from ircbot import bot
+
 cyrillic_latin = {u'а': 'a', u'б': 'b', u'в': 'v', u'г': 'g',
                   u'д': 'd', u'е': 'ye', u'ё': 'yo', u'ж': 'zh',
                   u'з': 'z', u'и': 'i', u'й': 'j', u'к': 'k',
@@ -21,6 +23,7 @@ def translate_text(bot, text):
     return api_json['text'][0]
 
 
+@bot.hook()
 def message_hook(bot, channel, sender, message):
     if set(message) <= set(cyrillic_latin.keys()) and message.strip():
         translit = ''.join(str(c) for c in map(lambda x: cyrillic_latin[x], message))

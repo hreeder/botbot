@@ -1,6 +1,7 @@
 import pylast
 
 from redis import StrictRedis
+from ircbot import bot
 
 
 def set_np_user(bot, sender, username):
@@ -13,6 +14,8 @@ def get_np_user(bot, sender):
     return redis.get("{}lastfm-{}".format(bot.config['System']['redis_prefix'], sender))
 
 
+@bot.command('np')
+@bot.command('nowplaying')
 def np(bot, channel, sender, args):
     """Now Playing - Gets the currently scrobbling track for a given last.fm user. Usage: np thebigredbutton"""
     from_redis = get_np_user(bot, sender)

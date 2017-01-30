@@ -1,9 +1,14 @@
 import hashlib
+import json
+import re
+import requests
 
+from ircbot import bot
 from redis import StrictRedis
 from slacker import Slacker
 
 
+@bot.command('slackwho')
 def slackwho(bot, channel, sender, args):
     """SlackWho will PM you a list of all users of the associated Slack Team"""
     slacker = Slacker(bot.config['Slack']['api_key'])
@@ -22,6 +27,7 @@ def slackwho(bot, channel, sender, args):
         bot.message(sender, output)
 
 
+@bot.command('slackwhois')
 def slackwhois(bot, channel, sender, args):
     """SlackWhois will return Username, Real Name (if available) and presence information about a given Slack user"""
     slacker = Slacker(bot.config['Slack']['api_key'])
@@ -45,6 +51,7 @@ def slackwhois(bot, channel, sender, args):
     bot.message(channel, "Slack User: %s, Presence: %s" % (name_str, user['presence']))
 
 
+@bot.command('slacksetavatar')
 def slacksetavatar(bot, sender, args):
     """SlackSetAvatar will set the avatar associated with your nickname.
     You can pass in either a URL or an E-Mail address (to use Gravatar)"""
@@ -65,3 +72,29 @@ def slacksetavatar(bot, sender, args):
         else:
             bot.message(sender, "Sorry, that wasn't recognised. I can support setting an email for gravatar "
                         "or a direct url for an avatar")
+
+
+@bot.hook()
+def message_hook(bot, channel, sender, message):
+    listen_on = bot.config['Slack']['listen'].split()
+    if channel in listen_on and not sender.startswith("["):
+        redis = StrictRedis.from_url(bot.config['System']['redis_url'])
+        redis_key = bot.config['System']['redis_prefix'] + "slack-avatar-" + sender
+
+        endpoint = bot.config['Slack']['webhook']
+        chanstr = channel.replace("#", "")
+        target_channel = bot.config['Slack'][chanstr + "_target"]
+
+        message = message.replace("\x01", "")
+        message = re.sub(r'/\[([^@\ ]]+)\]/', r'@$1', message)
+
+        payload = {
+            'text': message,
+            'username': sender,
+            'channel': target_channel
+        }
+
+        if redis.exists(redis_key):
+            payload['icon_url'] = redis.get(redis_key).decode("utf-8")
+
+        requests.post(endpoint, data=json.dumps(payload))

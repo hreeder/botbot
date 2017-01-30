@@ -1,6 +1,9 @@
 import requests
 
+from ircbot import bot
 
+
+@bot.command('bunny')
 def bunny_command(bot, channel, sender, args):
     uri = "https://api.bunnies.io/v2/loop/%s/?media=gif"
     part = "random"

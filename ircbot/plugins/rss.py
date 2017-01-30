@@ -1,12 +1,13 @@
 import feedparser
 import logging
 import time
-from util import Format
+from ircbot import bot, Format
 
 
 logger = logging.getLogger("BotBot-RSS")
 
 
+@bot.periodic()
 class RSSCallback:
     def __init__(self):
         #                    m    s    ms
