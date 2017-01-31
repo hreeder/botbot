@@ -7,4 +7,3 @@ def reload(bot, channel, sender, args):
     if sender == bot.config['System']['owner']:
         bot.load_plugins()
         bot.message(channel, "Reloaded 👍")
-
