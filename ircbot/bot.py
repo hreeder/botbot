@@ -57,12 +57,19 @@ class BotBot(pydle.Client):
             self.config_location = location
 
         self.config = ConfigParser()
+        logger.debug(self.config_location)
         if self.config_location:
             self.config.read(self.config_location)
+            logger.debug(self.config)
 
             self._nicknames = [self.config['IRC']['nick']]
             self.nickname = self.config['IRC']['nick']
             logger.debug("Setting Nickname: {}, All: {}".format(self.nickname, self._nicknames))
+
+            if "username" in self.config['IRC']:
+                self.username = self.config['IRC']['username']
+            else:
+                self.username = self.nickname.lower()
 
             self.trigger = self.config['IRC']['trigger']
             self.join_channels = self.config['IRC']['channel'].split()
