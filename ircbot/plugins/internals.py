@@ -65,14 +65,6 @@ def channel_test_string(bot, channel, sender, args):
         bot.message(channel, Format.TEST_STRING)
 
 
-@bot.command('reload')
-def reload(bot, channel, sender, args):
-    """Owner Command: Reload the bot"""
-    if sender == bot.config['System']['owner']:
-        bot.load_plugins()
-        bot.message(channel, "Reloaded")
-
-
 @bot.webhook(r"/")
 class DefaultHandler(RequestHandler):
     def get(self):
