@@ -92,9 +92,9 @@ def weather(bot, channel, sender, args):
         weather = response.json()
 
         bot.message(channel, "%s: The current weather in %s: %s || %s°C || Wind: %s m/s || Clouds: %s%% || Pressure: %s hpa" % (sender,
-                                                                                                                                 geocoded[u'formatted_address'],
-                                                                                                                                 weather['weather'][0]['description'],
-                                                                                                                                 weather['main']['temp'],
-                                                                                                                                 weather['wind']['speed'],
-                                                                                                                                 weather['clouds']['all'],
-                                                                                                                                 weather['main']['pressure']))
+                                                                                                                                geocoded[u'formatted_address'],
+                                                                                                                                weather['weather'][0]['description'],
+                                                                                                                                weather['main']['temp'],
+                                                                                                                                weather['wind']['speed'],
+                                                                                                                                weather['clouds']['all'],
+                                                                                                                                weather['main']['pressure']))
