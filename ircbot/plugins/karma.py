@@ -26,6 +26,7 @@ def get_multi_karma(bot, number, reverse):
 
 
 @bot.command('top5')
+@bot.command('high5')
 def top_karma(bot, channel, sender, args):
     k = get_multi_karma(bot, 5, True)
 
@@ -33,6 +34,7 @@ def top_karma(bot, channel, sender, args):
 
 
 @bot.command('last5')
+@bot.command('low5')
 def lowest_karma(bot, channel, sender, args):
     k = get_multi_karma(bot, 5, False)
 
