@@ -8,7 +8,7 @@ from tornado.web import RequestHandler
 @bot.command('karma')
 def karma_command(bot, channel, sender, args):
     redis = StrictRedis.from_url(bot.config['System']['redis_url'])
-    term = " ".join(args).lower() if args else sender
+    term = " ".join(args).lower() if args else sender.lower()
     try:
         amount = int(redis.hget(bot.config['System']['redis_prefix'] + "karma", term))
     except TypeError:
