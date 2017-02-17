@@ -176,7 +176,7 @@ class BotBot(pydle.Client):
         command = message.split()[0]
         args = message.split()[1:]
 
-        if command in self.pm_commands.keys():
+        if command in self.commands.keys():
             self.commands[command](self, sender, sender, args)
             return
 
