@@ -143,6 +143,7 @@ class BotBot(pydle.Client):
         self.commands[command] = action
 
     def register_hook(self, channel_hook):
+        logger.debug("Registering Hook: {}".format(channel_hook))
         self.channel_hooks.append(channel_hook)
 
     def register_periodic(self, clazz):
@@ -179,6 +180,9 @@ class BotBot(pydle.Client):
         if command in self.commands.keys():
             self.commands[command](self, sender, sender, args)
             return
+
+        for hook in self.channel_hooks:
+            hook(self, sender, sender, message)
 
     def message(self, channel, msg):
         if msg.count("\n") > int(self.config["IRC"]["maxlines"]) or len(msg) > int(self.config["IRC"]["maxlen"]):
