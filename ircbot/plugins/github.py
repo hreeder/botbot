@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 @bot.webhook("/github")
 class GithubHandler(RequestHandler):
     def initialize(self):
-        self.prefix = "%s[Github]%s" % (Format.GREEN, Format.RESET)
+        self.prefix = "%s[GitHub]%s" % (Format.GREEN, Format.RESET)
         self.bot = self.application._ctx
 
     @coroutine
@@ -40,7 +40,7 @@ class GithubHandler(RequestHandler):
 
     @coroutine
     def handle_ping(self, target_channel, body):
-        logger.debug("Github PING <==> PONG")
+        logger.debug("GitHub PING <==> PONG")
         self.bot.message("#" + target_channel, "%s PING" % self.prefix)
 
     @coroutine
