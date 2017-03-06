@@ -11,9 +11,14 @@ def link_title_parse_hook(bot, channel, sender, message):
         try:
             if rfc3987.match(word, rule='URI'):
                 r = requests.get(word)
+
+                if r.status_code != 200:
+                    return
+
                 soup = BeautifulSoup(r.text, 'html.parser')
                 title = soup.head.title.text.strip()
                 title = title.replace("\n", "")
+
                 bot.message(channel, " :: {}".format(title))
         except requests.exceptions.InvalidSchema:
             pass
