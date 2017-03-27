@@ -58,8 +58,7 @@ def unignore(bot, sender, args):
         bot.ignored_users.remove(args[0])
 
 
-@bot.command('colorsofthewind')
-@bot.command('coloursofthewind')
+@bot.command(['colorsofthewind', 'coloursofthewind'])
 def channel_test_string(bot, channel, sender, args):
     if sender == bot.config['System']['owner']:
         bot.message(channel, Format.TEST_STRING)

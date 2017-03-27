@@ -112,9 +112,12 @@ class BotBot(pydle.Client):
         self.periodic_tasks = [PeriodicCallback(task.callback, task.callback_time, io_loop=self.event_loop.io_loop) for task in self.periodic_tasks]
         [task.start() for task in self.periodic_tasks]
 
-    def command(self, keyword):
+    def command(self, keywords):
         def decorator(f):
-            self.register_command(keyword, f)
+            if isinstance(keywords, str):
+                self.register_command(keywords, f)
+            elif isinstance(keywords, list):
+                [self.register_command(keyword, f) for keyword in keywords]
             return f
         return decorator
 
