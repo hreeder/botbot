@@ -52,7 +52,7 @@ def slackwhois(bot, channel, sender, args):
 
 
 @bot.command('slacksetavatar')
-def slacksetavatar(bot, sender, args):
+def slacksetavatar(bot, channel, sender, args):
     """SlackSetAvatar will set the avatar associated with your nickname.
     You can pass in either a URL or an E-Mail address (to use Gravatar)"""
     if args:
@@ -81,6 +81,8 @@ def message_hook(bot, channel, sender, message):
         redis = StrictRedis.from_url(bot.config['System']['redis_url'])
         redis_key = bot.config['System']['redis_prefix'] + "slack-avatar-" + sender
 
+        slacker = Slacker(bot.config['Slack']['api_key'])
+
         endpoint = bot.config['Slack']['webhook']
         chanstr = channel.replace("#", "")
         target_channel = bot.config['Slack'][chanstr + "_target"]
@@ -91,10 +93,16 @@ def message_hook(bot, channel, sender, message):
         payload = {
             'text': message,
             'username': sender,
-            'channel': target_channel
+            'channel': target_channel,
+            'as_user': False
         }
 
-        if redis.exists(redis_key):
-            payload['icon_url'] = redis.get(redis_key).decode("utf-8")
+        avatar = None
 
-        requests.post(endpoint, data=json.dumps(payload))
+        if redis.exists(redis_key):
+            avatar = redis.get(redis_key).decode("utf-8")
+
+#        print(payload)
+
+#        requests.post(endpoint, data=json.dumps(payload))
+        slacker.chat.post_message(target_channel, text=message, username=sender, as_user=False, icon_url=avatar)
