@@ -30,13 +30,25 @@ def host(bot, channel, sender, args):
                 query_response = query_response[:4]
                 truncated = True
 
+            def get_target(rdata):
+                print(dir(rdata))
+                if query_type in ["A", "AAAA"]:
+                    return rdata.address
+                elif query_type in ["CNAME"]:
+                    return rdata.target
+                elif query_type in ["TXT"]:
+                    return ", ".join([s.decode('utf-8') for s in rdata.strings])
+                else:
+                    return rdata
+
             for rdata in query_response:
-                bot.message(channel, "{} ({}): {}".format(target, query_type, rdata))
+                response = get_target(rdata)
+                bot.message(channel, "{} ({}): {}".format(target, query_type, response))
 
             if truncated:
                 bot.message(channel, "Response truncated - more than 4 responses")
 
         except dns.resolver.NXDOMAIN as ex:
             bot.message(channel, "NXDOMAIN ({}): {}".format(query_type, str(ex)))
-        except dns.resolver.NoAnswer:
-            pass
+        except dns.resolver.NoAnswer as ex:
+            bot.message(channel, str(ex))
