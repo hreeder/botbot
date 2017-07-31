@@ -80,6 +80,9 @@ def message_hook(bot, channel, sender, message):
         term = term.strip().lower()
         decrement(bot, term)
 
+    if not reason:
+        reason = ""
+
     if term:
         reason = reason.strip()
         redis = StrictRedis.from_url(bot.config['System']['redis_url'])
