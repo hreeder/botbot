@@ -62,7 +62,7 @@ def decrement(bot, term):
 def message_hook(bot, channel, sender, message):
     redis = None
     term = None
-    reason = None
+    reason = ""
 
     m = re.match(r'^(.*)\+\+([ \t].*)*$', message)
     if m is not None:
