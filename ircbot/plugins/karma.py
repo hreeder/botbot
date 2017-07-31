@@ -3,7 +3,7 @@ import operator
 from ircbot import bot
 from redis import StrictRedis
 from tornado.web import RequestHandler
-
+import re
 
 @bot.command('karma')
 def karma_command(bot, channel, sender, args):
@@ -61,23 +61,29 @@ def decrement(bot, term):
 def message_hook(bot, channel, sender, message):
     redis = None
     term = None
+    reason = None
 
-    if message.endswith("++"):
-        term = message[:-2].lower()
-
+    m = re.match(r'^(.*)\+\+([ \t].*)*$', message)
+    if m is not None:
+        term, reason = m.groups()
+        term = term.strip().lower()
         if term == sender.lower():
             bot.message(channel, "Haha, nope!")
             decrement(bot, term)
         else:
             increment(bot, term)
-    elif message.endswith("--"):
-        term = message[:-2].lower()
+
+    m = re.match(r'^(.*)--([ \t].*)*$', message)
+    if message.endswith("--"):
+        term, reason = m.groups()
+        term = term.strip().lower()
         decrement(bot, term)
 
     if term:
+        reason = reason.strip()
         redis = StrictRedis.from_url(bot.config['System']['redis_url'])
         amount = int(redis.hget(bot.config['System']['redis_prefix'] + "karma", term))
-        bot.message(channel, "%s now has %s karma" % (term, amount))
+        bot.message(channel, "%s now has %s karma by dint of %s" % (term, amount, reason))
 
 
 @bot.webhook(r"/karma")
