@@ -5,6 +5,7 @@ from redis import StrictRedis
 from tornado.web import RequestHandler
 import re
 
+
 @bot.command('karma')
 def karma_command(bot, channel, sender, args):
     redis = StrictRedis.from_url(bot.config['System']['redis_url'])
@@ -74,7 +75,7 @@ def message_hook(bot, channel, sender, message):
             increment(bot, term)
 
     m = re.match(r'^(.*)--([ \t].*)*$', message)
-    if message.endswith("--"):
+    if m is not None:
         term, reason = m.groups()
         term = term.strip().lower()
         decrement(bot, term)
