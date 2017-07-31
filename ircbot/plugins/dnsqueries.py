@@ -4,6 +4,7 @@ import ipaddress
 
 from ircbot import bot
 
+
 @bot.command('host')
 def host(bot, channel, sender, args):
     """Query DNS for a hostname. Usage: $host [MX] example.com"""
@@ -12,7 +13,7 @@ def host(bot, channel, sender, args):
         query_types = ["A", "AAAA"]
 
         try:
-            target_ipaddr = ipaddress.ip_address(target)
+            ipaddress.ip_address(target)
             target = dns.reversename.from_address(target)
             query_types = ["PTR"]
         except ValueError:

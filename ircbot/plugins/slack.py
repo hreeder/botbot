@@ -1,7 +1,5 @@
 import hashlib
-import json
 import re
-import requests
 
 from ircbot import bot
 from redis import StrictRedis
@@ -83,26 +81,15 @@ def message_hook(bot, channel, sender, message):
 
         slacker = Slacker(bot.config['Slack']['api_key'])
 
-        endpoint = bot.config['Slack']['webhook']
         chanstr = channel.replace("#", "")
         target_channel = bot.config['Slack'][chanstr + "_target"]
 
         message = message.replace("\x01", "")
         message = re.sub(r'/\[([^@\ ]]+)\]/', r'@$1', message)
 
-        payload = {
-            'text': message,
-            'username': sender,
-            'channel': target_channel,
-            'as_user': False
-        }
-
         avatar = None
 
         if redis.exists(redis_key):
             avatar = redis.get(redis_key).decode("utf-8")
 
-#        print(payload)
-
-#        requests.post(endpoint, data=json.dumps(payload))
         slacker.chat.post_message(target_channel, text=message, username=sender, as_user=False, icon_url=avatar)

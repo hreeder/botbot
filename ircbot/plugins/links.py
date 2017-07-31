@@ -4,6 +4,7 @@ import rfc3987
 from bs4 import BeautifulSoup
 from ircbot import bot
 
+
 def allowed_to_process(bot, channel):
     mode = bot.config['Links']['mode']
 
