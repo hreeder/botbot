@@ -84,7 +84,7 @@ def message_hook(bot, channel, sender, message):
         reason = reason.strip()
         redis = StrictRedis.from_url(bot.config['System']['redis_url'])
         amount = int(redis.hget(bot.config['System']['redis_prefix'] + "karma", term))
-        bot.message(channel, "%s now has %s karma by dint of %s" % (term, amount, reason))
+        bot.message(channel, "%s now has %s karma %s" % (term, amount, reason))
 
 
 @bot.webhook(r"/karma")
