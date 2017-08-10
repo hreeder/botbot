@@ -49,12 +49,14 @@ def message(bot, channel, sender, args):
 @bot.command('ignore')
 def ignore(bot, channel, sender, args):
     if sender == bot.config['System']['owner'] and args:
+        print("Ignoring: '{}'".format(args[0]))
         bot.ignored_users.add(args[0])
 
 
 @bot.command('unignore')
-def unignore(bot, sender, args):
+def unignore(bot, channel, sender, args):
     if sender == bot.config['System']['owner'] and args:
+        print("Unignoring: '{}'".format(args[0]))
         bot.ignored_users.remove(args[0])
 
 
