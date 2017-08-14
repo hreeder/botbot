@@ -64,9 +64,10 @@ def message_hook(bot, channel, sender, message):
     term = None
     reason = ""
 
-    m = re.match(r'^(.*)\+\+([ \t].*)*$', message)
+    m = re.match(r'^(?P<term>.*)\+\+(?P<reason> (for|because){1}[ \t].*)*$', message)
     if m is not None:
-        term, reason = m.groups()
+        term = m.group('term')
+        reason = m.group('reason')
         term = term.strip().lower()
         if term == sender.lower():
             bot.message(channel, "Haha, nope!")
@@ -74,9 +75,10 @@ def message_hook(bot, channel, sender, message):
         else:
             increment(bot, term)
 
-    m = re.match(r'^(.*)--([ \t].*)*$', message)
+    m = re.match(r'^(?P<term>.*)--(?P<reason> (for|because){1}[ \t].*)*$', message)
     if m is not None:
-        term, reason = m.groups()
+        term = m.group('term')
+        reason = m.group('reason')
         term = term.strip().lower()
         decrement(bot, term)
 
