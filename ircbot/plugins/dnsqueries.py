@@ -7,7 +7,7 @@ from ircbot import bot
 
 @bot.command('host')
 def host(bot, channel, sender, args):
-    """Query DNS for a hostname. Usage: $host [MX] example.com"""
+    """Query DNS for a hostname. Usage: {bot.trigger}host [MX] example.com"""
     if len(args) == 1:
         target = args[0]
         query_types = ["A", "AAAA"]
