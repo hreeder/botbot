@@ -26,6 +26,10 @@ redis_prefix = botbot-
 plugin_dirs = /home/skull/dev/botbot-plugins
 plugin_blacklist = 
 
+[Links]
+mode = whitelist
+channels = #your #whitelisted #channels
+
 [Slack]
 listen = 
 api_key = 
