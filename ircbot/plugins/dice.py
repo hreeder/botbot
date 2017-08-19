@@ -6,7 +6,7 @@ from ircbot import bot
 
 @bot.command('roll')
 def roll(bot, channel, sender, args):
-    """ Roll some dice """
+    """ Roll some dice - Usage: {bot.trigger}roll [<n>d<sides>] - ie `{bot.trigger}roll` or `{bot.trigger}roll 1d20`"""
     n = 1
     sides = 6
     if args and re.match(r"^(?P<num>[0-9]+)d(?P<sides>[0-9]+)$", args[0]):
