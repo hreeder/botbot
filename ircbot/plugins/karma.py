@@ -8,6 +8,7 @@ import re
 
 @bot.command('karma')
 def karma_command(bot, channel, sender, args):
+    """ Shows Karma for yourself, or optionally another user. Usage: {bot.trigger}karma [username] """
     redis = StrictRedis.from_url(bot.config['System']['redis_url'])
     term = " ".join(args).lower() if args else sender.lower()
     try:
@@ -28,6 +29,7 @@ def get_multi_karma(bot, number, reverse):
 
 @bot.command(['top5', 'high5'])
 def top_karma(bot, channel, sender, args):
+    """ Shows the top 5 users' karma scores """
     k = get_multi_karma(bot, 5, True)
 
     bot.message(channel, ", ".join("%s (%d)" % (item, amount) for item, amount in k))
@@ -35,6 +37,7 @@ def top_karma(bot, channel, sender, args):
 
 @bot.command(['last5', 'low5'])
 def lowest_karma(bot, channel, sender, args):
+    """ Shows the lowest 5 users' karma scores """
     k = get_multi_karma(bot, 5, False)
 
     bot.message(channel, ", ".join("%s (%d)" % (item, amount) for item, amount in k))
