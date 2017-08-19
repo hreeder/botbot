@@ -5,7 +5,7 @@ from ircbot import bot
 def help(bot, channel, sender, args):
     """Shows all commands, or gets help for a specific command"""
     if args and args[0] in bot.commands.keys():
-        docstring = bot.commands[args[0]].__doc__
+        docstring = bot.commands[args[0]].__doc__.format(bot=bot)
         bot.message(channel, "Help for {0}: {1}".format(args[0], docstring))
     else:
         bot.message(channel, "I know the following channel commands: {0}".format(", ".join(sorted(bot.commands.keys()))))
