@@ -15,7 +15,8 @@ def whereis(bot, channel, sender, args):
         'rhiaro': whereis_amy,
         'amy': whereis_amy,
 #        'tbrb': whereis_tbrb,
-        'harry': whereis_tbrb
+#        'harry': whereis_tbrb,
+        'alistair': whereis_alistair
     }
     if who in targets.keys():
         targets[who](bot, channel, sender, args)
@@ -55,3 +56,14 @@ def whereis_amy(bot, channel, sender, args):
     endpoint = "http://rhiaro.co.uk/where"
     data = json.loads(requests.get(endpoint).text)
     bot.message(channel, data['as:summary'] + " - https://rhiaro.co.uk/arrives")
+
+
+def whereis_alistair(bot, channel, sender, args):
+    endpoint = "https://v2.pw/loc.json"
+    mapurl = "http://maps.googleapis.com/maps/api/staticmap?size=640x320&markers=size:large%7Ccolor:0xc0c0c0%7C"
+    data = json.loads(requests.get(endpoint).text)
+    last_updated = datetime.datetime.fromtimestamp(int(data['update']))
+    reported = last_updated.strftime('%Y/%m/%d %H:%M')
+
+    response = "Alistair's last location, reported on %s, was %s%s+%s" % (reported, mapurl, data['lat'], data['lon'])
+    bot.message(channel, response)
