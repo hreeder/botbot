@@ -11,6 +11,7 @@ def ipcheck(bot, channel, sender, args):
     """Ping a host. Usage: .ping example.com"""
     ip = args[0]
     targets = []
+    truncated = False
 
     try:
         targets.append(ipaddress.ip_address(ip))
@@ -24,6 +25,9 @@ def ipcheck(bot, channel, sender, args):
                 bot.message(channel, "NXDOMAIN ({}): {}".format(qtype, str(ex)))
             except dns.resolver.NoAnswer as ex:
                 pass
+            if channel != sender and len(result) > 4:
+                result = result[:4]
+                truncated = True
             query_responses.extend(result)
         targets = [ipaddress.ip_address(rdata.address) for rdata in query_responses]
 
@@ -41,3 +45,6 @@ def ipcheck(bot, channel, sender, args):
             bot.message(channel, 'Host {} is Up!'.format(str(address)))
         else:
             bot.message(channel, 'Host {} is Down!'.format(str(address)))
+
+    if truncated:
+        bot.message(channel, "Response truncated - DNS Lookup contained more than 4 records (A / AAAA treated independently)")

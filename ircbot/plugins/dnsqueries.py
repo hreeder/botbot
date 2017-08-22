@@ -7,7 +7,7 @@ from ircbot import bot
 
 @bot.command('host')
 def host(bot, channel, sender, args):
-    """Query DNS for a hostname. Usage: $host [MX] example.com"""
+    """Query DNS for a hostname. Usage: {bot.trigger}host [MX] example.com"""
     if len(args) == 1:
         target = args[0]
         query_types = ["A", "AAAA"]
@@ -47,7 +47,7 @@ def host(bot, channel, sender, args):
                 bot.message(channel, "{} ({}): {}".format(target, query_type, response))
 
             if truncated:
-                bot.message(channel, "Response truncated - more than 4 responses")
+                bot.message(channel, "Response truncated - DNS Lookup contained more than 4 records (A / AAAA treated independently)")
 
         except dns.resolver.NXDOMAIN as ex:
             bot.message(channel, "NXDOMAIN ({}): {}".format(query_type, str(ex)))
