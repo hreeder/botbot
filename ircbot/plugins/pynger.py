@@ -13,7 +13,7 @@ def ipcheck(bot, channel, sender, args):
     targets = []
 
     try:
-        targets.append(str(ipaddress.ip_address(ip)))
+        targets.append(ipaddress.ip_address(ip))
     except ValueError:
         query_responses = []
         for qtype in ["A", "AAAA"]:
