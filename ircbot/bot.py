@@ -80,6 +80,8 @@ class BotBot(pydle.Client):
             except:
                 pass
 
+            self.ignored_users.update(set(self.config['IRC']['ignore'].split()))
+
     def load_plugins(self):
         self.load_config()
         self.cleanup()

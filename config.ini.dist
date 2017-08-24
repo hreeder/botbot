@@ -11,6 +11,7 @@ nick = botbot
 trigger = $
 maxlines = 5
 maxlen = 1000
+ignore = ignored users here
 
 [Webhooks]
 host = 0.0.0.0
