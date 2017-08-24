@@ -79,7 +79,7 @@ class BotBot(pydle.Client):
                     self.webserver_listening = True
             except:
                 pass
-            
+
             self.ignored_users.update(set(self.config['IRC']['ignore'].split()))
 
     def load_plugins(self):
