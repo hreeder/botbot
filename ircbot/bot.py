@@ -20,7 +20,7 @@ plugin_base = PluginBase(package='ircbot.plugins')
 
 class BotBot(pydle.Client):
     def __init__(self, fallback_nicknames=[], username=None, realname=None, **kwargs):
-        super(BotBot, self).__init__("botbot-defaultnickname",
+        super(BotBot, self).__init__("CazBot",
                                      fallback_nicknames=fallback_nicknames,
                                      username=username,
                                      realname=realname,
