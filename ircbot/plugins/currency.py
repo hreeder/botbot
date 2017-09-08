@@ -1,33 +1,33 @@
-import json
-
-from urllib.request import urlopen
+import requests
 
 from ircbot import bot
 
 
-def get_currency(currency_a, currency_b):
-    endpoint = "http://api.fixer.io/latest?base={}".format(str(currency_a).upper())
+def get_exchange_rate(base_currency: str, target_currency: str):
+    endpoint = "http://api.fixer.io/latest"
 
-    response = urlopen(endpoint).read().decode("utf-8")
-    data = json.loads(response)
+    resp = requests.get(endpoint, params={"base": base_currency})
 
-    currency_ratio = data["rates"][str(currency_b).upper()]
-
-    return currency_ratio
+    return resp.json()['rates'][target_currency]
 
 
 @bot.command('currency')
 def command(bot, channel, sender, args):
-    """Converts Currency. Usage: $currency 10 usd gbp"""
+    """Converts Currency. Usage: {bot.trigger}currency 10 usd gbp"""
     if len(args) < 3:
-        bot.message(channel, "This command requires 3 arguments.")
+        bot.message(channel, "This command requires 3 arguments, e.g. {}currency 10 usd gbp".format(bot.trigger))
         return
     amount_a = args[0]
-    currency_a = str(args[1])
-    currency_b = str(args[2])
+    base_currency = str(args[1]).upper()
+    target_currency = str(args[2]).upper()
 
-    currency_ratio = get_currency(currency_a, currency_b)
+    exchange_rate = get_exchange_rate(base_currency, target_currency)
 
-    amount_b = float(amount_a) * currency_ratio
+    amount_b = float(amount_a) * exchange_rate
 
-    bot.message(channel, "{}{} is equal to {}{}".format(str(amount_a), currency_a.upper(), str(round(amount_b, 2)), currency_b.upper()))
+    bot.message(channel, "{}{} is equal to {}{}".format(
+        amount_a,
+        base_currency,
+        round(amount_b, 2),
+        target_currency
+    ))
