@@ -18,12 +18,10 @@ def get_currency(currency_a, currency_b):
 
 @bot.command('currency')
 def command(bot, channel, sender, args):
-    """Converts Currency. Usage: $currency 10usd gbp"""
-    currency_a = str(args[0])
-    amount_a = currency_a[:-3]
-    currency_a = currency_a[-3:]
-
-    currency_b = str(args[1])
+    """Converts Currency. Usage: $currency 10 usd gbp"""
+    amount_a = args[0]
+    currency_a = str(args[1])
+    currency_b = str(args[2])
 
     currency_ratio = get_currency(currency_a, currency_b)
 
