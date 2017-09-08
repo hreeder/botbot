@@ -18,8 +18,8 @@ def command(bot, channel, sender, args):
         bot.message(channel, "This command requires 3 arguments, e.g. {}currency 10 usd gbp".format(bot.trigger))
         return
     amount_a = args[0]
-    base_currency = str(args[1]).upper()
-    target_currency = str(args[2]).upper()
+    base_currency = args[1].upper()
+    target_currency = args[2].upper()
 
     exchange_rate = get_exchange_rate(base_currency, target_currency)
 
