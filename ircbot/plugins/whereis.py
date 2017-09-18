@@ -68,6 +68,7 @@ def whereis_alistair(bot, channel, sender, args):
     response = "Alistair's last location, reported on %s, was %s%s+%s" % (reported, mapurl, data['lat'], data['lon'])
     bot.message(channel, response)
 
+
 def whereis_cazagen(bot, channel, sender, args):
     endpoint = "http://loc.cazagen.me/loc.json"
     mapurl = "http://maps.googleapis.com/maps/api/staticmap?size=640x320&markers=size:large%7Ccolor:0xc0c0c0%7C"
