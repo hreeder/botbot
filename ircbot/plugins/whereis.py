@@ -1,5 +1,4 @@
 import datetime
-import json
 import requests
 
 from ircbot import bot
@@ -16,7 +15,8 @@ def whereis(bot, channel, sender, args):
         'amy': whereis_amy,
         # 'tbrb': whereis_tbrb,
         # 'harry': whereis_tbrb,
-        'alistair': whereis_alistair
+        'alistair': whereis_alistair,
+        'cazagen': whereis_cazagen
     }
     if who in targets.keys():
         targets[who](bot, channel, sender, args)
@@ -30,7 +30,7 @@ def whereis(bot, channel, sender, args):
 def whereis_rikki(bot, channel, sender, args):
     endpoint = "http://rtrack.r2zer0.net/"
     mapurl = "http://maps.googleapis.com/maps/api/staticmap?size=640x320&markers=size:large%7Ccolor:0xc0c0c0%7C"
-    data = json.loads(requests.get(endpoint).text)
+    data = requests.get(endpoint).json()
     last_updated = datetime.datetime.fromtimestamp(
         int(data['timestamp']) / 1000)
     reported = last_updated.strftime('%Y/%m/%d %H:%M')
@@ -46,7 +46,7 @@ def whereis_rikki(bot, channel, sender, args):
 # def whereis_tbrb(bot, channel, sender, args):
 #     endpoint = "http://track-api.harryreeder.co.uk/ehpeeye"
 #     mapurl = "http://maps.googleapis.com/maps/api/staticmap?size=640x320&markers=size:large%7Ccolor:0xc0c0c0%7C"
-#     data = json.loads(requests.get(endpoint).text)
+#     data = requests.get(endpoint).json()
 #     response = "tbrb's last location was %s%s+%s" % (mapurl,
 #                                                      data['loc']['latitude'], data['loc']['longitude'])
 #     bot.message(channel, response)
@@ -54,16 +54,27 @@ def whereis_rikki(bot, channel, sender, args):
 
 def whereis_amy(bot, channel, sender, args):
     endpoint = "http://rhiaro.co.uk/where"
-    data = json.loads(requests.get(endpoint).text)
+    data = requests.get(endpoint).json()
     bot.message(channel, data['as:summary'] + " - https://rhiaro.co.uk/arrives")
 
 
 def whereis_alistair(bot, channel, sender, args):
     endpoint = "https://v2.pw/loc.json"
     mapurl = "http://maps.googleapis.com/maps/api/staticmap?size=640x320&markers=size:large%7Ccolor:0xc0c0c0%7C"
-    data = json.loads(requests.get(endpoint).text)
+    data = requests.get(endpoint).json()
     last_updated = datetime.datetime.fromtimestamp(int(data['update']))
     reported = last_updated.strftime('%Y/%m/%d %H:%M')
 
     response = "Alistair's last location, reported on %s, was %s%s+%s" % (reported, mapurl, data['lat'], data['lon'])
+    bot.message(channel, response)
+
+
+def whereis_cazagen(bot, channel, sender, args):
+    endpoint = "http://loc.cazagen.me/loc.json"
+    mapurl = "http://maps.googleapis.com/maps/api/staticmap?size=640x320&markers=size:large%7Ccolor:0xc0c0c0%7C"
+    data = requests.get(endpoint).json()
+    last_updated = datetime.datetime.fromtimestamp(int(data['update']))
+    reported = last_updated.strftime('%Y/%m/%d %H:%M')
+
+    response = "Cameron's last location, reported on %s, was %s%s+%s" % (reported, mapurl, data['lat'], data['lon'])
     bot.message(channel, response)
