@@ -48,6 +48,7 @@ def message(bot, channel, sender, args):
 
 @bot.command('ignore')
 def ignore(bot, channel, sender, args):
+    """Owner command: Ignores a users's messages"""
     if sender == bot.config['System']['owner'] and args:
         print("Ignoring: '{}'".format(args[0]))
         bot.ignored_users.add(args[0])
@@ -55,6 +56,7 @@ def ignore(bot, channel, sender, args):
 
 @bot.command('unignore')
 def unignore(bot, channel, sender, args):
+    """Owner command: Starts listening to a users's messages again"""
     if sender == bot.config['System']['owner'] and args:
         print("Unignoring: '{}'".format(args[0]))
         bot.ignored_users.remove(args[0])
@@ -62,6 +64,7 @@ def unignore(bot, channel, sender, args):
 
 @bot.command(['colorsofthewind', 'coloursofthewind'])
 def channel_test_string(bot, channel, sender, args):
+    """Owner command: Test string with sweet, rainbow colours. Totally gay."""
     if sender == bot.config['System']['owner']:
         bot.message(channel, Format.TEST_STRING)
 

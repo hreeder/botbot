@@ -6,6 +6,7 @@ from redis import StrictRedis
 
 @bot.command('buttmaster')
 def buttmaster(bot, channel, sender, args):
+    """Usage: {bot.trigger}buttmaster [n] - Tells you who the buttmaster is. Add a number to get a top N."""
     if args and int(args[0]):
         top = get_multi_butts(bot, int(args[0]), True)
         bot.message(channel, ", ".join("%s (%d)" % (item, amount) for item, amount in top))
@@ -16,6 +17,7 @@ def buttmaster(bot, channel, sender, args):
 
 @bot.command('butts')
 def butts(bot, channel, sender, args):
+    """Usage: {bot.trigger}butts [nick] - Tells you how many butts (nick) has. Defaults to sender's nick"""
     redis = StrictRedis.from_url(bot.config['System']['redis_url'])
     who = " ".join(args).lower() if args else sender
     try:

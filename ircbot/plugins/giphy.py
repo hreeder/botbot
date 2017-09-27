@@ -5,6 +5,7 @@ from ircbot import bot
 
 @bot.command('giphy')
 def giphy(bot, channel, sender, args):
+    """Usage {bot.trigger}giphy [tag] - Finds a random gif, or returns a random gif tagged with [tag]"""
     tag = None
     if args:
         tag = " ".join(args)

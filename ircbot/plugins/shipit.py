@@ -5,6 +5,7 @@ from ircbot import bot
 
 @bot.command("shipit")
 def shipit(bot, channel, sender, args):
+    """Usage {bot.trigger}shipit - Ship it squirrel"""
     bot.message(channel, random.choice([
         "http://shipitsquirrel.github.io/images/ship%20it%20squirrel.png",
         "http://media.tumblr.com/tumblr_lybw63nzPp1r5bvcto1_500.jpg",
