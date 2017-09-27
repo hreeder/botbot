@@ -10,6 +10,7 @@ def dog_command(bot, channel, sender, args):
     data = requests.get(uri).json()['url']
     bot.message(channel, "{}".format(data))
 
+
 @bot.command(['dogs', 'dogbomb'])
 def dog_bomb(bot, channel, sender, args):
     """Usage: {bot.trigger}(dogs|dogbomb) [N] - Sends N dogs to the current channel. N defaults to 3. N max = 10."""
