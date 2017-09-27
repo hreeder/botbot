@@ -269,5 +269,5 @@ excuses = [
 
 @bot.command('excuse')
 def excuseme(bot, channel, sender, args):
-    """Usage {bot.trigger}excuse - For when you desperately need a good excuse."""
+    """Usage: {bot.trigger}excuse - For when you desperately need a good excuse."""
     bot.message(channel, random.choice(excuses))
