@@ -5,6 +5,7 @@ from ircbot import bot
 
 @bot.command('bunny')
 def bunny_command(bot, channel, sender, args):
+    """Usage: {bot.trigger}bunny [bunny id] - Grabs a bunny gif, if an id isn't specifed one will be chosen"""
     uri = "https://api.bunnies.io/v2/loop/%s/?media=gif"
     part = "random"
     if args:
@@ -18,7 +19,7 @@ def bunny_command(bot, channel, sender, args):
 
 @bot.command('bunnybomb')
 def bunny_bomb(bot, channel, sender, args):
-    """ Usage: $bunnybomb [N] - Sends N bunnies to the current channel. N defaults to 5. Nmax = 10 """
+    """ Usage: {bot.trigger}bunnybomb [N] - Sends N bunnies to the current channel. N defaults to 5. Nmax = 10 """
     n = 5
     if args:
         try:
