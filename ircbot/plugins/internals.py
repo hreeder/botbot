@@ -64,7 +64,7 @@ def unignore(bot, channel, sender, args):
 
 @bot.command(['colorsofthewind', 'coloursofthewind'])
 def channel_test_string(bot, channel, sender, args):
-    """Owner Command: Test string with sweet, rainbow colours. Totally gay."""
+    """Owner Command: Test string with sweet, rainbow colours. Our pride and joy."""
     if sender == bot.config['System']['owner']:
         bot.message(channel, Format.TEST_STRING)
 
