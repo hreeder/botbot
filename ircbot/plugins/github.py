@@ -41,7 +41,7 @@ class GithubHandler(RequestHandler):
     @coroutine
     def handle_ping(self, target_channel, body):
         logger.debug("GitHub PING <==> PONG")
-        self.bot.message("#" + target_channel, "{} PING".format(self.prefix))   
+        self.bot.message("#" + target_channel, "{} PING".format(self.prefix))
 
     @coroutine
     def handle_push(self, target_channel, body):

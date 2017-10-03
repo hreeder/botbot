@@ -39,7 +39,7 @@ def whereis_rikki(bot, channel, sender, args):
                                                                            mapurl,
                                                                            data['latitude'],
                                                                            data['longitude'])
-   
+
     bot.message(channel, response)
 
 

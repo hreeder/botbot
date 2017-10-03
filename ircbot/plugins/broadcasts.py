@@ -35,7 +35,7 @@ def destroy_topic(bot, channel, sender, args):
 def allow_sender(bot, channel, sender, args):
     topic = args[0]
     redis = StrictRedis.from_url(bot.config['System']['redis_url'])
-    if sender == redis.hget(bot.config['System']['redis_prefix'] + "lists:{}".format{topic}, "owner").decode('utf-8'):
+    if sender == redis.hget(bot.config['System']['redis_prefix'] + "lists:{}".format(topic), "owner").decode('utf-8'):
         redis.sadd(bot.config['System']['redis_prefix'] + "lists:{}:senders".format(topic), args[1])
         bot.message(channel, "{}: You have now given {} the ability to broadcast to the topic '{}'".format(sender, args[1], topic))
     else:
@@ -69,7 +69,7 @@ def subscribe(bot, channel, sender, args):
     topic = args[0]
     redis = StrictRedis.from_url(bot.config['System']['redis_url'])
     if redis.sismember(bot.config['System']['redis_prefix'] + "lists", topic):
-        redis.sadd(bot.config['System']['redis_prefix'] + "lists:{}:subscribers"format(topic), sender)
+        redis.sadd(bot.config['System']['redis_prefix'] + "lists:{}:subscribers".format(topic), sender)
         bot.message(channel, "{}: You are now subscribed to the topic '{}'".format(sender, topic))
     else:
         bot.message(channel, "{}: You cannot subscribe to a topic that doesn't exist!".format(sender))

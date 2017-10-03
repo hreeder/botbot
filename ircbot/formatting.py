@@ -24,7 +24,7 @@ class Format:
     GREY = COLOR + "14"
     SILVER = COLOR + "15"
 
-    TEST_STRING = "none {}white {}black {}blue {}green {}red {}brown {}purple {}orange {}yellow {}lime {}teal "
+    TEST_STRING = "none {}white {}black {}blue {}green {}red {}brown {}purple {}orange {}yellow {}lime {}teal " \
                   "{}aqua {}royal {}pink {}grey {}silver{}".format(
                       WHITE, BLACK, BLUE, GREEN, RED, BROWN, PURPLE, ORANGE, YELLOW, LIME, TEAL, AQUA, ROYAL, PINK,
                       GREY, SILVER, RESET
