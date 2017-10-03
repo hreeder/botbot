@@ -15,7 +15,7 @@ def karma_command(bot, channel, sender, args):
         amount = int(redis.hget(bot.config['System']['redis_prefix'] + "karma", term))
     except TypeError:
         amount = "no"
-    bot.message(channel, "%s has %s karma" % (term, amount))
+    bot.message(channel, "{} has {} karma".format(term, amount))
 
 
 def get_multi_karma(bot, number, reverse):
@@ -32,7 +32,7 @@ def top_karma(bot, channel, sender, args):
     """ Shows the top 5 users' karma scores """
     k = get_multi_karma(bot, 5, True)
 
-    bot.message(channel, ", ".join("%s (%d)" % (item, amount) for item, amount in k))
+    bot.message(channel, ", ".join("{} ({:d})".format(item, amount) for item, amount in k))
 
 
 @bot.command(['last5', 'low5'])
@@ -40,7 +40,7 @@ def lowest_karma(bot, channel, sender, args):
     """ Shows the lowest 5 users' karma scores """
     k = get_multi_karma(bot, 5, False)
 
-    bot.message(channel, ", ".join("%s (%d)" % (item, amount) for item, amount in k))
+    bot.message(channel, ", ".join("{} ({:d})".format(item, amount) for item, amount in k))
 
 
 def increment(bot, term):
@@ -92,7 +92,7 @@ def message_hook(bot, channel, sender, message):
         reason = reason.strip()
         redis = StrictRedis.from_url(bot.config['System']['redis_url'])
         amount = int(redis.hget(bot.config['System']['redis_prefix'] + "karma", term))
-        bot.message(channel, "%s now has %s karma %s" % (term, amount, reason))
+        bot.message(channel, "{} now has {} karma {}".format(term, amount, reason))
 
 
 @bot.webhook(r"/karma")

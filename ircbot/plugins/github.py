@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 @bot.webhook("/github")
 class GithubHandler(RequestHandler):
     def initialize(self):
-        self.prefix = "%s[GitHub]%s" % (Format.GREEN, Format.RESET)
+        self.prefix = "{}[GitHub]{}".format(Format.GREEN, Format.RESET)
         self.bot = self.application._ctx
 
     @coroutine
@@ -26,10 +26,10 @@ class GithubHandler(RequestHandler):
 
         target_channel = self.get_argument("channel", None, None)
 
-        # logger.debug("Github Hook Type: %s" % hook_type)
-        # logger.debug("Body: %s" % body_text)
+        # logger.debug("Github Hook Type: {}".format(hook_type))
+        # logger.debug("Body: {}".format(body_text))
 
-        method_name = "handle_%s" % (hook_type.lower().replace(" ", "_"))
+        method_name = "handle_{}".format(hook_type.lower().replace(" ", "_"))
 
         try:
             handler = getattr(self, method_name)
@@ -41,7 +41,7 @@ class GithubHandler(RequestHandler):
     @coroutine
     def handle_ping(self, target_channel, body):
         logger.debug("GitHub PING <==> PONG")
-        self.bot.message("#" + target_channel, "%s PING" % self.prefix)
+        self.bot.message("#" + target_channel, "{} PING".format(self.prefix))   
 
     @coroutine
     def handle_push(self, target_channel, body):
@@ -49,7 +49,7 @@ class GithubHandler(RequestHandler):
         repo = body['repository']['full_name']
         commits = body['commits']
         commit_suffix = "s" if len(commits) > 1 else ""
-        self.bot.message("#" + target_channel, "%s %s%s%s has pushed %s%d%s commit%s to %s%s%s" % (
+        self.bot.message("#" + target_channel, "{} {}{}{} has pushed {}{:d}{} commit{} to {}{}{}".format(
             self.prefix,
             Format.BLUE, who, Format.RESET,
             Format.TEAL, len(commits), Format.RESET,
@@ -69,7 +69,7 @@ class GithubHandler(RequestHandler):
             "pending": Format.TEAL
         }
 
-        self.bot.message("#" + target_channel, "%s %s%s%s - %s%s%s" % (
+        self.bot.message("#" + target_channel, "{} {}{}{} - {}{}{}".format(
             self.prefix,
             Format.BLUE, repo, Format.RESET,
             colour[body['state']], what_happened, Format.RESET
@@ -78,7 +78,7 @@ class GithubHandler(RequestHandler):
     @coroutine
     def handle_pull_request(self, target_channel, body):
         repo = body['repository']['full_name']
-        pr_info = "Pull Request %s#%d: %s%s" % (Format.GREEN, body['pull_request']['number'], body['pull_request']['title'], Format.RESET)
+        pr_info = "Pull Request {}#{:d}: {}{}".format(Format.GREEN, body['pull_request']['number'], body['pull_request']['title'], Format.RESET)
         action = body['action']
         if action == "closed" and body['pull_request']['merged']:
             state = "merged"
@@ -86,7 +86,7 @@ class GithubHandler(RequestHandler):
             state = action
 
         if state == "assigned":
-            message = "%s %s%s%s - %s%s%s assigned %s to %s%s%s" % (
+            message = "{} {}{}{} - {}{}{} assigned {} to {}{}{}".format(
                 self.prefix,
                 Format.ORANGE, repo, Format.RESET,
                 Format.BLUE, body['sender']['login'], Format.RESET,
@@ -94,14 +94,14 @@ class GithubHandler(RequestHandler):
                 Format.BLUE, body['pull_request']['assignee']['login'], Format.RESET
             )
         elif state == "unassigned":
-            message = "%s %s%s%s - %s%s%s unassigned %s" % (
+            message = "{} {}{}{} - {}{}{} unassigned {}".format(
                 self.prefix,
                 Format.ORANGE, repo, Format.RESET,
                 Format.BLUE, body['sender']['login'], Format.RESET,
                 pr_info
             )
         elif state == "labeled":
-            message = "%s %s%s%s - %s%s%s added label %s%s%s to %s" % (
+            message = "{} {}{}{} - {}{}{} added label {}{}{} to {}".format(
                 self.prefix,
                 Format.ORANGE, repo, Format.RESET,
                 Format.BLUE, body['sender']['login'], Format.RESET,
@@ -109,7 +109,7 @@ class GithubHandler(RequestHandler):
                 pr_info
             )
         elif state == "unlabeled":
-            message = "%s %s%s%s - %s%s%s removed label %s%s%s from %s" % (
+            message = "{} {}{}{} - {}{}{} removed label {}{}{} from {}".format(
                 self.prefix,
                 Format.ORANGE, repo, Format.RESET,
                 Format.BLUE, body['sender']['login'], Format.RESET,
@@ -117,35 +117,35 @@ class GithubHandler(RequestHandler):
                 pr_info
             )
         elif state == "opened":
-            message = "%s %s%s%s - %s%s%s opened %s" % (
+            message = "{} {}{}{} - {}{}{} opened {}".format(
                 self.prefix,
                 Format.ORANGE, repo, Format.RESET,
                 Format.BLUE, body['sender']['login'], Format.RESET,
                 pr_info
             )
         elif state == "closed":
-            message = "%s %s%s%s - %s%s%s closed %s" % (
+            message = "{} {}{}{} - {}{}{} closed {}".format(
                 self.prefix,
                 Format.ORANGE, repo, Format.RESET,
                 Format.BLUE, body['sender']['login'], Format.RESET,
                 pr_info
             )
         elif state == "reopened":
-            message = "%s %s%s%s - %s%s%s re-opened %s" % (
+            message = "{} {}{}{} - {}{}{} re-opened {}".format(
                 self.prefix,
                 Format.ORANGE, repo, Format.RESET,
                 Format.BLUE, body['sender']['login'], Format.RESET,
                 pr_info
             )
         elif state == "synchronize":
-            message = "%s %s%s%s - %s%s%s pushed new commits to %s" % (
+            message = "{} {}{}{} - {}{}{} pushed new commits to {}".format(
                 self.prefix,
                 Format.ORANGE, repo, Format.RESET,
                 Format.BLUE, body['sender']['login'], Format.RESET,
                 pr_info
             )
         elif state == "merged":
-            message = "%s %s%s%s - %s%s%s merged %s" % (
+            message = "{} {}{}{} - {}{}{} merged {}".format(
                 self.prefix,
                 Format.ORANGE, repo, Format.RESET,
                 Format.BLUE, body['sender']['login'], Format.RESET,
@@ -157,11 +157,11 @@ class GithubHandler(RequestHandler):
     @coroutine
     def handle_issues(self, target_channel, body):
         repo = body['repository']['full_name']
-        info = "issue %s#%d: %s%s" % (Format.GREEN, body['issue']['number'], body['issue']['title'], Format.RESET)
+        info = "issue {}#{:d}: {}{}".format(Format.GREEN, body['issue']['number'], body['issue']['title'], Format.RESET)
         state = body['action']
 
         if state == "assigned":
-            message = "%s %s%s%s - %s%s%s assigned %s to %s%s%s" % (
+            message = "{} {}{}{} - {}{}{} assigned {} to {}{}{}".format(
                 self.prefix,
                 Format.ORANGE, repo, Format.RESET,
                 Format.BLUE, body['sender']['login'], Format.RESET,
@@ -169,14 +169,14 @@ class GithubHandler(RequestHandler):
                 Format.BLUE, body['issue']['assignee']['login'], Format.RESET
             )
         elif state == "unassigned":
-            message = "%s %s%s%s - %s%s%s unassigned %s" % (
+            message = "{} {}{}{} - {}{}{} unassigned {}".format(
                 self.prefix,
                 Format.ORANGE, repo, Format.RESET,
                 Format.BLUE, body['sender']['login'], Format.RESET,
                 info
             )
         elif state == "labeled":
-            message = "%s %s%s%s - %s%s%s added label %s%s%s to %s" % (
+            message = "{} {}{}{} - {}{}{} added label {}{}{} to {}".format(
                 self.prefix,
                 Format.ORANGE, repo, Format.RESET,
                 Format.BLUE, body['sender']['login'], Format.RESET,
@@ -184,7 +184,7 @@ class GithubHandler(RequestHandler):
                 info
             )
         elif state == "unlabeled":
-            message = "%s %s%s%s - %s%s%s removed label %s%s%s from %s" % (
+            message = "{} {}{}{} - {}{}{} removed label {}{}{} from {}".format(
                 self.prefix,
                 Format.ORANGE, repo, Format.RESET,
                 Format.BLUE, body['sender']['login'], Format.RESET,
@@ -192,21 +192,21 @@ class GithubHandler(RequestHandler):
                 info
             )
         elif state == "opened":
-            message = "%s %s%s%s - %s%s%s opened %s" % (
+            message = "{} {}{}{} - {}{}{} opened {}".format(
                 self.prefix,
                 Format.ORANGE, repo, Format.RESET,
                 Format.BLUE, body['sender']['login'], Format.RESET,
                 info
             )
         elif state == "closed":
-            message = "%s %s%s%s - %s%s%s closed %s" % (
+            message = "{} {}{}{} - {}{}{} closed {}".format(
                 self.prefix,
                 Format.ORANGE, repo, Format.RESET,
                 Format.BLUE, body['sender']['login'], Format.RESET,
                 info
             )
         elif state == "reopened":
-            message = "%s %s%s%s - %s%s%s re-opened %s" % (
+            message = "{} {}{}{} - {}{}{} re-opened {}".format(
                 self.prefix,
                 Format.ORANGE, repo, Format.RESET,
                 Format.BLUE, body['sender']['login'], Format.RESET,
@@ -218,9 +218,9 @@ class GithubHandler(RequestHandler):
     @coroutine
     def handle_issue_comment(self, target_channel, body):
         repo = body['repository']['full_name']
-        info = "%s#%d: %s%s" % (Format.GREEN, body['issue']['number'], body['issue']['title'], Format.RESET)
+        info = "{}#{:d}: {}{}".format(Format.GREEN, body['issue']['number'], body['issue']['title'], Format.RESET)
 
-        message = "%s %s%s%s - %s%s%s commented on %s" % (
+        message = "{} {}{}{} - {}{}{} commented on {}".format(
             self.prefix, Format.ORANGE, repo, Format.RESET,
             Format.BLUE, body['sender']['login'], Format.RESET,
             info

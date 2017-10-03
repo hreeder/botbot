@@ -14,7 +14,7 @@ def help(bot, channel, sender, args):
 @bot.command('about')
 def bot_info(bot, channel, sender, args):
     """Returns info about the bot, it's owner and where to report issues"""
-    bot.message(channel, "%s: I am %s, a deployment of BotBot. My owner is %s. Any issues can be reported at %s" % (
+    bot.message(channel, "{}: I am {}, a deployment of BotBot. My owner is {}. Any issues can be reported at {}".format(
         sender,
         bot.config['IRC']['nick'],
         bot.config['System']['owner'],

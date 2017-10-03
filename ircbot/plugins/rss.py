@@ -12,7 +12,7 @@ class RSSCallback:
     def __init__(self):
         #                    m    s    ms
         self.callback_time = 15 * 60 * 1000
-        self.prefix = "%s[RSS]%s" % (Format.GREEN, Format.RESET)
+        self.prefix = "{}[RSS]{}".format(Format.GREEN, Format.RESET)
 
         self.feeds = {}
 
