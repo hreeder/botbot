@@ -316,7 +316,8 @@ ipv6excuses = [
     "We have no roadmap for native IPv6 as we rolled out 6RD",
     "Too many people have broken IPv6 stacks",
     "We have IPv6, but we just want to keep things simple",
-    "Our Dynamic DNS doesn't support it"]
+    "Our Dynamic DNS doesn't support it",
+    "We're holding out for IPv10. It's the next big thing."]
 
 
 @bot.command('excuse')
