@@ -12,6 +12,7 @@ def ud(bot, channel, sender, args):
         definition.definition
     ))
 
+
 @bot.command('udrandom')
 def udrandom(bot, channel, sender, args):
     """ Defines you a random word from urban dictonary"""
