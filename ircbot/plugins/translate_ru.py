@@ -16,7 +16,7 @@ cyrillic_latin = {u'а': 'a', u'б': 'b', u'в': 'v', u'г': 'g',
 
 def translate_text(bot, text):
     api_key = bot.config['Yandex']['translate_key']
-    api_url = "https://translate.yandex.net/api/v1.5/tr.json/translate?key=%s&text=%s&lang=ru-en" % (api_key, text)
+    api_url = "https://translate.yandex.net/api/v1.5/tr.json/translate?key={}&text={}&lang=ru-en".format(api_key, text)
     api_response = requests.get(api_url).text
     api_json = json.loads(api_response)
     print(api_json)
@@ -28,4 +28,4 @@ def message_hook(bot, channel, sender, message):
     if set(message) <= set(cyrillic_latin.keys()) and message.strip():
         translit = ''.join(str(c) for c in map(lambda x: cyrillic_latin[x], message))
         translate = translate_text(bot, message)
-        bot.message(channel, '%s <%s> ~ %s' % (message, translit, translate))
+        bot.message(channel, '{} <{}> ~ {}'.format(message, translit, translate))

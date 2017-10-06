@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 @bot.webhook("/libraries")
 class LibrariesHandler(RequestHandler):
     def initialize(self):
-        self.prefix = "%s[LibrariesIO]%s" % (Format.GREEN, Format.RESET)
+        self.prefix = "{}[LibrariesIO]{}".format(Format.GREEN, Format.RESET)
         self.bot = self.application._ctx
 
     @coroutine
@@ -20,7 +20,7 @@ class LibrariesHandler(RequestHandler):
         target_channel = self.get_argument("channel", None, None)
 
         event = data['event']
-        method_name = "handle_%s" % (event.lower())
+        method_name = "handle_{}".format(event.lower())
 
         try:
             handler = getattr(self, method_name)
@@ -31,7 +31,7 @@ class LibrariesHandler(RequestHandler):
 
     @coroutine
     def handle_new_version(self, target_channel, data):
-        self.bot.message(target_channel, "%s %s%s%s - A library has been updated: %s%s%s - %sv%s%s (%s%s%s)" % (
+        self.bot.message(target_channel, "{} {}{}{} - A library has been updated: {}{}{} - {}v{}{} ({}{}{})".format(
             self.prefix,
             Format.BLUE, data['repository'], Format.RESET,
             Format.AQUA, data['name'], Format.RESET,

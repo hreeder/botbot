@@ -9,10 +9,10 @@ def buttmaster(bot, channel, sender, args):
     """Usage: {bot.trigger}buttmaster [n] - Tells you who the buttmaster is. Add a number to get a top N."""
     if args and int(args[0]):
         top = get_multi_butts(bot, int(args[0]), True)
-        bot.message(channel, ", ".join("%s (%d)" % (item, amount) for item, amount in top))
+        bot.message(channel, ", ".join("{} {:d}".format(item, amount) for item, amount in top))
     else:
         top = get_multi_butts(bot, 1, True)[0]
-        bot.message(channel, "The buttmaster is %s, with %s butts" % (top[0], top[1]))
+        bot.message(channel, "The buttmaster is {}, with {} butts".format(top[0], top[1]))
 
 
 @bot.command('butts')
@@ -25,7 +25,7 @@ def butts(bot, channel, sender, args):
     except TypeError:
         amount = "no"
 
-    bot.message(channel, "%s has %s butts" % (who, amount))
+    bot.message(channel, "{} has {} butts".format(who, amount))
 
 
 def get_multi_butts(bot, number, reverse):
