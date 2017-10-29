@@ -19,7 +19,7 @@ def geocode(bot, channel, sender, args):
     geocoder = json.loads(geocode_response)
 
     if geocoder[u'status'] == u'ZERO_RESULTS':
-        return "%s: I was unable to find that location." % (sender,)
+        return "{}: I was unable to find that location.".format(sender)
 
     geocoded = geocoder['results'][0]
 
@@ -60,16 +60,16 @@ def time(bot, channel, sender, args):
     localtime = json.loads(time_response)
 
     if localtime[u'status'] == u'FAIL':
-        bot.message(channel, "%s: I was unable to find the time in %s" % (sender, datetime.datetime.utcfromtimestamp(localtime[u'timestamp'])))
+        bot.message(channel, "{}: I was unable to find the time in {}".format(sender, datetime.datetime.utcfromtimestamp(localtime[u'timestamp'])))
         return
 
     timenow = datetime.datetime.utcfromtimestamp(localtime[u'timestamp'])
 
-    bot.message(channel, "%s: It is currently %s in %s || Timezone: %s (%s)" % (sender,
-                                                                                timenow.strftime("%H:%M"),
-                                                                                geocoded[u'formatted_address'],
-                                                                                tz,
-                                                                                timezone[u'timeZoneName']))
+    bot.message(channel, "{}: It is currently {} in {} || Timezone: {} ({})".format(sender,
+                                                                                    timenow.strftime("%H:%M"),
+                                                                                    geocoded[u'formatted_address'],
+                                                                                    tz,
+                                                                                    timezone[u'timeZoneName']))
 
 
 @bot.command('weather')
@@ -91,10 +91,10 @@ def weather(bot, channel, sender, args):
         response = requests.get(weather_endpoint, params=args)
         weather = response.json()
 
-        bot.message(channel, "%s: The current weather in %s: %s || %s°C || Wind: %s m/s || Clouds: %s%% || Pressure: %s hpa" % (sender,
-                                                                                                                                 geocoded[u'formatted_address'],
-                                                                                                                                 weather['weather'][0]['description'],
-                                                                                                                                 weather['main']['temp'],
-                                                                                                                                 weather['wind']['speed'],
-                                                                                                                                 weather['clouds']['all'],
-                                                                                                                                 weather['main']['pressure']))
+        bot.message(channel, "{}: The current weather in {}: {} || {}°C || Wind: {} m/s || Clouds: {}% || Pressure: {} hpa".format(sender,
+                                                                                                                                   geocoded[u'formatted_address'],
+                                                                                                                                   weather['weather'][0]['description'],
+                                                                                                                                   weather['main']['temp'],
+                                                                                                                                   weather['wind']['speed'],
+                                                                                                                                   weather['clouds']['all'],
+                                                                                                                                   weather['main']['pressure']))

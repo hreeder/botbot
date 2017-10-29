@@ -23,8 +23,8 @@ def whereis(bot, channel, sender, args):
     elif who == bot.nickname.lower():
         bot.message(channel, "I am in the following places: " + ", ".join(bot.channels.keys()))
     else:
-        bot.message(channel, "I do not know this '%s'. If they've got an open API reporting "
-                             "their location data, I'd love to know about it though!" % (who,))
+        bot.message(channel, "I do not know this '{}'. If they've got an open API reporting "
+                             "their location data, I'd love to know about it though!".format(who))
 
 
 def whereis_rikki(bot, channel, sender, args):
@@ -35,10 +35,10 @@ def whereis_rikki(bot, channel, sender, args):
         int(data['timestamp']) / 1000)
     reported = last_updated.strftime('%Y/%m/%d %H:%M')
 
-    response = "Rikki's last location, reported on %s, was %s%s+%s" % (reported,
-                                                                       mapurl,
-                                                                       data['latitude'],
-                                                                       data['longitude'])
+    response = "Rikki's last location, reported on {}, was {}{}+{}".format(reported,
+                                                                           mapurl,
+                                                                           data['latitude'],
+                                                                           data['longitude'])
 
     bot.message(channel, response)
 
@@ -47,8 +47,8 @@ def whereis_rikki(bot, channel, sender, args):
 #     endpoint = "http://track-api.harryreeder.co.uk/ehpeeye"
 #     mapurl = "http://maps.googleapis.com/maps/api/staticmap?size=640x320&markers=size:large%7Ccolor:0xc0c0c0%7C"
 #     data = requests.get(endpoint).json()
-#     response = "tbrb's last location was %s%s+%s" % (mapurl,
-#                                                      data['loc']['latitude'], data['loc']['longitude'])
+#     response = "tbrb's last location was {}{}+{}".format(mapurl,
+#                                                          data['loc']['latitude'], data['loc']['longitude'])
 #     bot.message(channel, response)
 
 
@@ -65,7 +65,7 @@ def whereis_alistair(bot, channel, sender, args):
     last_updated = datetime.datetime.fromtimestamp(int(data['update']))
     reported = last_updated.strftime('%Y/%m/%d %H:%M')
 
-    response = "Alistair's last location, reported on %s, was %s%s+%s" % (reported, mapurl, data['lat'], data['lon'])
+    response = "Alistair's last location, reported on {}, was {}{}+{}".format(reported, mapurl, data['lat'], data['lon'])
     bot.message(channel, response)
 
 
@@ -76,5 +76,5 @@ def whereis_cazagen(bot, channel, sender, args):
     last_updated = datetime.datetime.fromtimestamp(int(data['update']))
     reported = last_updated.strftime('%Y/%m/%d %H:%M')
 
-    response = "Cameron's last location, reported on %s, was %s%s+%s" % (reported, mapurl, data['lat'], data['lon'])
+    response = "Cameron's last location, reported on {}, was {}{}+{}".format(reported, mapurl, data['lat'], data['lon'])
     bot.message(channel, response)
