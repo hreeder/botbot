@@ -319,14 +319,18 @@ ipv6excuses = [
     "Our Dynamic DNS doesn't support it",
     "We're holding out for IPv10. It's the next big thing."]
 
+excuse_types = {
+    "default": excuses,
+    "ipv6": ipv6excuses
+}
+
 
 @bot.command('excuse')
 def excuseme(bot, channel, sender, args):
-    """Usage: {bot.trigger}excuse - For when you desperately need a good excuse."""
-    bot.message(channel, random.choice(excuses))
+    """Usage: {bot.trigger}excuse [excuse_type] - For when you desperately need a good excuse."""
+    excuse_type = "default"
 
+    if len(args) and args[0] in excuse_types:
+        excuse_type = args[0]
 
-@bot.command('ipv6excuse')
-def ipv6excuseme(bot, channel, sender, args):
-    """Usage: {bot.trigger}ipv6excuse - For when you desperately need a good IPv6 excuse."""
-    bot.message(channel, random.choice(ipv6excuses))
+    bot.message(channel, random.choice(excuse_types[excuse_type]))
