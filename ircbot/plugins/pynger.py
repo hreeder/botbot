@@ -3,12 +3,12 @@ import ipaddress
 import dns.resolver
 
 
-from ircbot import bot
+from ircbot import bot, Format
 
 
 @bot.command('ping')
 def ipcheck(bot, channel, sender, args):
-    """Ping a host. Usage: .ping example.com"""
+    """Ping a host. Usage: {bot.trigger}ping example.com"""
     ip = args[0]
     targets = []
     truncated = False
@@ -42,9 +42,9 @@ def ipcheck(bot, channel, sender, args):
 
         status, result = sp.getstatusoutput("{} -c1 -w2 {}".format(binary, str(address)))
         if status == 0:
-            bot.message(channel, 'Host {} is Up!'.format(str(address)))
+            bot.message(channel, 'Host {} is {}Up!{}'.format(str(address), Format.GREEN, Format.RESET))
         else:
-            bot.message(channel, 'Host {} is Down!'.format(str(address)))
+            bot.message(channel, 'Host {} is {}Down!{}'.format(str(address), Format.RED, Format.RESET))
 
     if truncated:
         bot.message(channel, "Response truncated - DNS Lookup contained more than 4 records (A / AAAA treated independently)")
