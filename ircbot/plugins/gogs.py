@@ -22,10 +22,6 @@ class GogsHandler(RequestHandler):
 
         target_channel = self.get_argument("channel", None, None)
 
-        logger.debug("Gogs Hook Type: {}".format(hook_type))
-        logger.debug("Headers: {}".format(self.request.headers))
-        logger.debug("Body: {}".format(body_text))
-
         method_name = "handle_{}".format(hook_type.lower().replace(" ", "_"))
 
         try:
