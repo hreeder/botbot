@@ -266,8 +266,71 @@ excuses = [
     'Leap second overloaded RHEL6 servers', 'DNS server drank too much and had a hiccup',
     'Your machine had the fuses in backwards.']
 
+ipv6excuses = [
+    "We've still got plenty of IPv4",
+    "It's not mature enough",
+    "Vendor bugs",
+    "IPv6 is a security risk",
+    "None of our customers want it",
+    "It's too complicated",
+    "NAT444 is fine",
+    "AWS doesn't support it",
+    "IPv6 addresses are too long to remember",
+    "Android doesn't support DHCPv6",
+    "No one else has deployed it",
+    "It's too hard to support",
+    "I don't want to expose my MAC address",
+    "It'll make it easier for the government to track me",
+    "IPv6 is slower than IPv4",
+    "Larger headers are less efficient",
+    "Hex is hard",
+    "There's no certification track",
+    "We don't need that many addresses",
+    "We can use RFC6598",
+    "Our vendor doesn't support it",
+    "It's not supported by Google Compute",
+    "There's no ROI on deploying IPv6",
+    "Azure doesn't support it",
+    "We would have to rewrite our entire application to support it",
+    "IPv6 is just a fad",
+    "IPv6 isn't supported by OVH Cloud",
+    "Those stupid Privacy Extension addresses keep changing",
+    "Can't we just buy more IPv4 addresses?",
+    "Github doesn't support IPv6",
+    "Our Lawful Intercept doesn't support IPv6 yet",
+    "We'll deploy IPv6 next financial year",
+    "IPv6 isn't an Internet Standard yet",
+    "End users don't care about IPv6",
+    "What's IPv6?",
+    "Our recursive DNS can't handle the extra load",
+    "What do you mean I have to wrap an IP in square brackets?",
+    "I don't want to lose the security provided by NAT",
+    "We don't have a lab to test it",
+    "My transit provider doesn't support IPv6",
+    "We'll deploy IPv6 right after we deploy DNSSEC",
+    "It'll break our GeoIP",
+    "Our business intelligence team can't even parse IPv4 logfiles",
+    "Our DDOS migation platform can't monitor IPv6",
+    "We forgot to include IPv6 in our last RFP",
+    "Did you mean IPTV?",
+    "We have no roadmap for native IPv6 as we rolled out 6RD",
+    "Too many people have broken IPv6 stacks",
+    "We have IPv6, but we just want to keep things simple",
+    "Our Dynamic DNS doesn't support it",
+    "We're holding out for IPv10. It's the next big thing."]
+
+excuse_types = {
+    "default": excuses,
+    "ipv6": ipv6excuses
+}
+
 
 @bot.command('excuse')
 def excuseme(bot, channel, sender, args):
-    """Usage: {bot.trigger}excuse - For when you desperately need a good excuse."""
-    bot.message(channel, random.choice(excuses))
+    """Usage: {bot.trigger}excuse [excuse_type] - For when you desperately need a good excuse."""
+    excuse_type = "default"
+
+    if len(args) and args[0] in excuse_types:
+        excuse_type = args[0]
+
+    bot.message(channel, random.choice(excuse_types[excuse_type]))
