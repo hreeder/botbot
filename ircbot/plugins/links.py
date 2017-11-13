@@ -8,6 +8,9 @@ from ircbot import bot
 def allowed_to_process(bot, channel):
     mode = bot.config['Links']['mode']
 
+    if mode == "all":
+        return True
+
     if mode == "whitelist" and channel in bot.config['Links']['channels']:
         return True
     elif mode == "whitelist":
