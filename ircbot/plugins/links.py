@@ -22,6 +22,14 @@ def allowed_to_process(bot, channel):
     return True
 
 
+def truncate_title(title):
+    title = title.replace("\n", "")
+    if len(title) > 120:
+        return "{}...".format(title[:120])
+    else:
+        return title
+
+
 @bot.hook()
 def link_title_parse_hook(bot, channel, sender, message):
     if not allowed_to_process(bot, channel):
@@ -36,8 +44,7 @@ def link_title_parse_hook(bot, channel, sender, message):
                     return
 
                 soup = BeautifulSoup(r.text, 'html.parser')
-                title = soup.head.title.text.strip()
-                title = title.replace("\n", "")
+                title = truncate_title(soup.head.title.text.strip())
 
                 bot.message(channel, " :: {}".format(title))
         except requests.exceptions.InvalidSchema:
