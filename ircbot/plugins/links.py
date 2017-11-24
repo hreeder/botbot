@@ -24,8 +24,9 @@ def allowed_to_process(bot, channel):
 
 def truncate_title(title):
     title = title.replace("\n", "")
-    if len(title) > bot.config['Links']['max_length']:
-        return "{}...".format(title[:bot.config['Links']['max_length'])
+    max_length = bot.config['Links']['max_length']
+    if len(title) > max_length:
+        return "{}...".format(title[:max_length])
     else:
         return title
 
