@@ -44,7 +44,8 @@ def link_title_parse_hook(bot, channel, sender, message):
                     return
 
                 soup = BeautifulSoup(r.text, 'html.parser')
-                title = truncate_title(soup.head.title.text.strip())
+                title = soup.head.title.text.strip()
+                title = truncate_title(title)
 
                 bot.message(channel, " :: {}".format(title))
         except requests.exceptions.InvalidSchema:
