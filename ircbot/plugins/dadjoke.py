@@ -2,6 +2,7 @@ import requests
 
 from ircbot import bot
 
+
 @bot.command('dadjoke')
 def dad_joke(bot, channel, sender, args):
     """Return a random dad - Usage: {bot.trigger}dadjoke"""
