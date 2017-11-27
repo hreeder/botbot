@@ -8,7 +8,7 @@ from ircbot import bot
 
 @bot.command('ping')
 def ipcheck(bot, channel, sender, args):
-    """Ping a host. Usage: .ping example.com"""
+    """Ping a host. Usage: {bot.trigger}ping example.com"""
     ip = args[0]
     targets = []
     truncated = False
