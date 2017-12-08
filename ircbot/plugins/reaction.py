@@ -1,5 +1,6 @@
 from ircbot import bot
 from redis import StrictRedis
+from tornado.web import RequestHandler
 
 
 @bot.command('react')
@@ -28,3 +29,16 @@ def add_reaction(bot, channel, sender, args):
 def react_shortcut_eyebrows(bot, channel, sender, args):
     """ Shortcut for {bot.trigger}react eyebrows """
     react(bot, channel, sender, ["eyebrows"])
+
+
+@bot.webhook(r"/reactions")
+class KarmaHandler(RequestHandler):
+    def get(self):
+        bot = self.application._ctx
+        redis = StrictRedis.from_url(bot.config['System']['redis_url'])
+        prefix = bot.config['System']['redis_prefix'] + "reactions:"
+
+        all_reaction_keys = redis.keys(prefix + "*")
+        reactions = {key.decode('utf-8')[len(prefix):]: [item.decode('utf-8') for item in redis.smembers(key)] for key in all_reaction_keys}
+
+        self.write(reactions)
