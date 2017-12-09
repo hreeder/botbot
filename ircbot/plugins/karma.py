@@ -1,8 +1,8 @@
 import operator
 
 from ircbot import bot
+from ircbot.webserver import BaseRequestHandler
 from redis import StrictRedis
-from tornado.web import RequestHandler
 import re
 
 
@@ -96,7 +96,7 @@ def message_hook(bot, channel, sender, message):
 
 
 @bot.webhook(r"/karma")
-class KarmaHandler(RequestHandler):
+class KarmaHandler(BaseRequestHandler):
     def get(self):
         bot = self.application._ctx
         redis = StrictRedis.from_url(bot.config['System']['redis_url'])
