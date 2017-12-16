@@ -2,6 +2,13 @@ from ircbot import bot, Format
 from tornado.web import RequestHandler
 
 
+@bot.command('gitrekt')
+def crash(bot, channel, sender, args):
+    """Owner Command: Testing Sentry"""
+    if sender == bot.config['System']['owner']:
+        raise NotImplementedError()
+
+
 @bot.command('die')
 def die(bot, channel, sender, args):
     """Owner Command: Causes the bot to disconnect"""
