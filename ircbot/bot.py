@@ -39,6 +39,7 @@ class BotBot(pydle.Client):
         self.webapp, self.webserver = setup_webserver(self)
         self.webapp._ctx = self
         self.webserver_listening = False
+        self.sentry = None
 
     def cleanup(self):
         self.commands = {}
@@ -81,6 +82,10 @@ class BotBot(pydle.Client):
                 pass
 
             self.ignored_users.update(set(self.config['IRC']['ignore'].split()))
+
+            if "Sentry" in self.config:
+                from raven import Client
+                self.sentry = Client(self.config['Sentry']['dsn'])
 
     def load_plugins(self):
         self.load_config()
@@ -170,7 +175,17 @@ class BotBot(pydle.Client):
 
             if command in self.commands.keys() and sender not in self.ignored_users:
                 logger.debug("Dispatching {} Command".format(command))
-                self.commands[command](self, channel, sender, args)
+                try:
+                    self.commands[command](self, channel, sender, args)
+                except:
+                    if self.sentry:
+                        self.sentry.captureException({
+                            "channel": channel,
+                            "sender": sender,
+                            "message": message,
+                            "command": command,
+                            "args": args
+                        })
                 return
 
         for chan_hook in self.channel_hooks:
