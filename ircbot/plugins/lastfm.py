@@ -1,7 +1,7 @@
 import pylast
 
 from redis import StrictRedis
-from ircbot import bot
+from ircbot import bot, Format
 
 
 def set_np_user(bot, sender, username):
@@ -36,7 +36,7 @@ def np(bot, channel, sender, args):
         user = network.get_user(user)
         np = user.get_now_playing()
         if np:
-            bot.message(channel, "[LastFM] {} is currently listening to '{}'".format(user.get_name(), np))
+            bot.message(channel, "[LastFM] {} is currently listening to {fmt.GREEN}{t.title}{fmt.RESET} by {fmt.ORANGE}{t.artist}{fmt.RESET}".format(user.get_name(), fmt=Format, t=np))
         else:
             last_played = user.get_recent_tracks(limit=2)
             last_played = last_played[0]
