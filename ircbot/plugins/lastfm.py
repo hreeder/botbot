@@ -36,11 +36,11 @@ def np(bot, channel, sender, args):
         user = network.get_user(user)
         np = user.get_now_playing()
         if np:
-            bot.message(channel, "[LastFM] {} is currently listening to {fmt.GREEN}{t.title}{fmt.RESET} by {fmt.ORANGE}{t.artist}{fmt.RESET}".format(user.get_name(), fmt=Format, t=np))
+            bot.message(channel, "[LastFM] {fmt.BLUE}{}{fmt.RESET} is currently listening to {fmt.GREEN}{t.title}{fmt.RESET} by {fmt.ORANGE}{t.artist}{fmt.RESET}".format(user.get_name(), fmt=Format, t=np))
         else:
             last_played = user.get_recent_tracks(limit=2)
             last_played = last_played[0]
-            bot.message(channel, "[LastFM] {} is not currently scrobbling - "
-                                 "They last listened to {}".format(user.get_name(), last_played.track))
+            bot.message(channel, "[LastFM] {fmt.BLUE}{}{fmt.RESET} is not currently scrobbling - "
+                                 "They last listened to {fmt.GREEN}{t.title}{fmt.RESET} by {fmt.ORANGE}{t.artist}{fmt.RESET}".format(user.get_name(), fmt=Format, t=last_played.track))
     except pylast.WSError:
             bot.message(channel, "[LastFM] I cannot find the user '{}'".format(user))
