@@ -5,7 +5,7 @@ from ircbot import bot
 
 @bot.command('convert')
 def convert(bot, channel, sender, args):
-    """ Converts units from one measurement to another. ie: !conv 100 cm inches """
+    """ Converts units from one measurement to another. ie: {bot.trigger}convert 100 cm inches """
     amount = float(args[0])
     unit_from = args[1]
     unit_to = args[2]
