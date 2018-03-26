@@ -72,7 +72,7 @@ def message_hook(bot, channel, sender, message):
         term = m.group('term')
         reason = m.group('reason')
         term = term.strip().lower()
-        if term == sender.lower() or term + "~d" == sender.lower():
+        if re.fullmatch("{}(~d|~s|)".format(term),term) is not None:
             bot.message(channel, "Haha, nope!")
             decrement(bot, term)
         else:
