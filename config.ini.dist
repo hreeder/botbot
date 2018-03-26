@@ -52,3 +52,6 @@ active = dsa
 dsa_url = https://www.debian.org/security/dsa
 dsa_channels = #yourchannel
 dsa_method = hash
+
+[Karma]
+re = (~d|~s|)
