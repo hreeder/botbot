@@ -72,7 +72,7 @@ def message_hook(bot, channel, sender, message):
         term = m.group('term')
         reason = m.group('reason')
         term = term.strip().lower()
-        if re.fullmatch("{}(~d|~s|)".format(term), sender.lower()) is not None:
+        if re.fullmatch("{}{}".format(term, bot.config['Karma']['re']), sender.lower()) is not None:
             bot.message(channel, "Haha, nope!")
             decrement(bot, term)
         else:
