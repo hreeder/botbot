@@ -2,7 +2,6 @@ import re
 
 from ircbot import bot
 from redis import StrictRedis
-from ircbot.webserver import BaseRequestHandler
 
 @bot.command('transfer')
 def transfer(bot, channel, sender, args):
