@@ -23,7 +23,7 @@ def transfer(bot, channel, sender, args):
             oldname = strings[0]
             newname = strings[1]
 
-        #transfer karma
+        # transfer karma
         try:
             oldkarma = int(redis.hget(bot.config['System']['redis_prefix'] + "karma", oldname))
         except TypeError:
@@ -35,7 +35,7 @@ def transfer(bot, channel, sender, args):
         redis.hset(bot.config['System']['redis_prefix'] + "karma", newname, oldkarma + newkarma)
         redis.hdel(bot.config['System']['redis_prefix'] + "karma", oldname)
 
-        #transfer butts
+        # transfer butts
         try:
             oldbutts = int(redis.hget(bot.config['System']['redis_prefix'] + "buttmaster", oldname))
         except TypeError:
