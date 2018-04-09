@@ -3,6 +3,7 @@ import re
 from ircbot import bot
 from redis import StrictRedis
 
+
 @bot.command('transfer')
 def transfer(bot, channel, sender, args):
     """"command to transfer karma & butts from one term to another"""
@@ -40,12 +41,14 @@ def transfer(bot, channel, sender, args):
         except TypeError:
             old_butts = 0
         try:
-            new_butts = current = int(redis.hget(bot.config['System']['redis_prefix'] + "buttmaster", new_name))
+            new_butts = int(redis.hget(bot.config['System']['redis_prefix'] + "buttmaster", new_name))
         except TypeError:
             new_butts = 0
         redis.hset(bot.config['System']['redis_prefix'] + "buttmaster", new_name, new_butts + old_butts)
         redis.hdel(bot.config['System']['redis_prefix'] + "buttmaster", old_name)
-        
-        bot.message(channel, "{} now has {} karma and {} butts, {} now has no karma and no butts".format(new_name,old_karma+new_karma,old_butts+new_butts,old_name))
+        bot.message(channel, "{} now has {} karma and {} butts, {} now has no karma and no butts".format(new_name, 
+                                                                                                         old_karma + new_karma,
+                                                                                                         old_butts + new_butts,
+                                                                                                         old_name))
 
 
