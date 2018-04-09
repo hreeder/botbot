@@ -18,7 +18,7 @@ def transfer(bot, channel, sender, args):
             for x in args:
                 string = string + " " + x
             for y in re.findall("(?![\'\"])[a-z,\s]+(?![\"\`])", string):
-                if re.fullmatch("(\s)*", y) is None:
+                if y.strip() == "":
                     strings.append(y.strip())
             oldname = strings[0]
             newname = strings[1]
