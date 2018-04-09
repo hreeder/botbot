@@ -14,10 +14,8 @@ def transfer(bot, channel, sender, args):
             old_name = args[0].lower()
             new_name = args[1].lower()
         else:
-            string = ""
+            string = args.join(" ")
             strings = []
-            for word in args:
-                string = "{} {}".format(string, word)
             for term in re.findall("(?![\'\"])[a-z,\s]+(?=[\"\'])", string):
                 strings.append(term.strip())
             old_name = strings[0]
