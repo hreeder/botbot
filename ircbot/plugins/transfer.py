@@ -8,8 +8,20 @@ def transfer(bot, channel, sender, args):
     """"command to transfer karma & butts from one term to another"""
     if sender.lower() == bot.config['System']['owner']:
         redis = StrictRedis.from_url(bot.config['System']['redis_url'])
-        oldname = args[0].lower()
-        newname = args[1].lower()
+
+        if len(args) == 2:
+            oldname = args[0].lower()
+            newname = args[1].lower()
+        else:
+            string = ""
+            strings = []
+            for x in args:
+                string = string + " " + x
+            for y in re.findall("(?![\'\"])[a-z,\s]+(?![\"\`])", string):
+                if re.fullmatch("(\s)*", y) is None:
+                    strings.append(y.strip())
+            oldname = strings[0]
+            newname = strings[1]
 
         #transfer karma
         try:
