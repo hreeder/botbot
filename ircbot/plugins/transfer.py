@@ -6,7 +6,7 @@ from redis import StrictRedis
 
 @bot.command('transfer')
 def transfer(bot, channel, sender, args):
-    """"command to transfer karma & butts from one term to another, usage: $transfer name1 name2"""
+    """"command to transfer karma & butts from one term to another, usage: {bot.trigger}transfer name1 name2"""
     if sender.lower() == bot.config['System']['owner']:
         if len(args) == 2:
                 first_name = args[0].lower()
@@ -20,7 +20,7 @@ def transfer(bot, channel, sender, args):
                 first_name = strings[0].lower()
                 second_name = strings[1].lower()
             except IndexError:
-                bot.message(channel, "Oops! Looks like you didn't give enough arguments!, please use the following syntax: `$transfer name1 name2` ")
+                bot.message(channel, "Oops! Looks like you didn't give enough arguments!, please use the following syntax: `{}transfer name1 name2` ".format(bot.trigger))
                 return
 
         redis = StrictRedis.from_url(bot.config['System']['redis_url'])
