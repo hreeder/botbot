@@ -10,41 +10,42 @@ def transfer(bot, channel, sender, args):
         redis = StrictRedis.from_url(bot.config['System']['redis_url'])
 
         if len(args) == 2:
-            oldname = args[0].lower()
-            newname = args[1].lower()
+            old_name = args[0].lower()
+            new_name = args[1].lower()
         else:
             string = ""
             strings = []
-            for x in args:
-                string = string + " " + x
-            for y in re.findall("(?![\'\"])[a-z,\s]+(?![\"\`])", string):
-                if re.fullmatch("(\s)*", y) is None:
-                    strings.append(y.strip())
-            oldname = strings[0]
-            newname = strings[1]
+            for word in args:
+                string = "{} {}".format(string, word)
+            for term in re.findall("(?![\'\"])[a-z,\s]+(?![\"\`])", string):
+                if term.strip() != "":
+                    strings.append(term.strip())
+            old_name = strings[0]
+            new_name = strings[1]
 
-        #transfer karma
+        # transfer karma
         try:
-            oldkarma = int(redis.hget(bot.config['System']['redis_prefix'] + "karma", oldname))
+            old_karma = int(redis.hget(bot.config['System']['redis_prefix'] + "karma", old_name))
         except TypeError:
-            oldkarma = 0
+            old_karma = 0
         try:
-            newkarma = int(redis.hget(bot.config['System']['redis_prefix'] + "karma", newname))
+            new_karma = int(redis.hget(bot.config['System']['redis_prefix'] + "karma", new_name))
         except TypeError:
-            newkarma = 0
-        redis.hset(bot.config['System']['redis_prefix'] + "karma", newname, oldkarma + newkarma)
-        redis.hdel(bot.config['System']['redis_prefix'] + "karma", oldname)
+            new_karma = 0
+        redis.hset(bot.config['System']['redis_prefix'] + "karma", new_name, old_karma + new_karma)
+        redis.hdel(bot.config['System']['redis_prefix'] + "karma", old_name)
 
-        #transfer butts
+        # transfer butts
         try:
-            oldbutts = int(redis.hget(bot.config['System']['redis_prefix'] + "buttmaster", oldname))
+            old_butts = int(redis.hget(bot.config['System']['redis_prefix'] + "buttmaster", old_name))
         except TypeError:
-            oldbutts = 0
+            old_butts = 0
         try:
-            newbutts = current = int(redis.hget(bot.config['System']['redis_prefix'] + "buttmaster", newname))
+            new_butts = current = int(redis.hget(bot.config['System']['redis_prefix'] + "buttmaster", new_name))
         except TypeError:
-            newbutts = 0
-        redis.hset(bot.config['System']['redis_prefix'] + "buttmaster", newname, newbutts + oldbutts)
-        redis.hdel(bot.config['System']['redis_prefix'] + "buttmaster", oldname)
-
+            new_butts = 0
+        redis.hset(bot.config['System']['redis_prefix'] + "buttmaster", new_name, new_butts + old_butts)
+        redis.hdel(bot.config['System']['redis_prefix'] + "buttmaster", old_name)
+        
+        bot.message(channel, "{} now has {} karma and {} butts, {} now has no karma and no butts".format(new_name,old_karma+new_karma,old_butts+new_butts,old_name))
 
