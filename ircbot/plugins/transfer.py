@@ -7,10 +7,7 @@ from redis import StrictRedis
 @bot.command('transfer')
 def transfer(bot, channel, sender, args):
     """"command to transfer karma & butts from one term to another"""
-    if sender.lower() == bot.config['System']['owner']:
-        redis = StrictRedis.from_url(bot.config['System']['redis_url'])
-
-        if len(args) == 2:
+    if len(args) == 2:
             old_name = args[0].lower()
             new_name = args[1].lower()
         else:
@@ -18,8 +15,13 @@ def transfer(bot, channel, sender, args):
             strings = []
             for term in re.findall("(?![\'\"])[a-z,\s]+(?=[\"\'])", string):
                 strings.append(term.strip())
-            old_name = strings[0]
-            new_name = strings[1]
+            try:
+                old_name = strings[0].lower()
+                new_name = strings[1].lower()
+            except IndexError:
+                bot.message(channel, "Oops! Looks like you didn't give enough arguments!")
+    if sender.lower() == bot.config['System']['owner'] or sender.lower() == old_name:
+        redis = StrictRedis.from_url(bot.config['System']['redis_url'])
 
         # transfer karma
         try:
