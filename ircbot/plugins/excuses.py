@@ -13,10 +13,13 @@ def excuseme(bot, channel, sender, args):
     excuse_types_decoded = [t.decode('utf-8').split(":", 1)[1] for t in excuse_types]
 
     if len(args) and args[0] in excuse_types_decoded:
+        print("Excuse type specified")
         excuse_type = args[0]
     else:
         bot.message(channel, "{}Excuse type {} does not exist, here is an excuse from BOFH{}".format(Format.ROYAL, args[0], Format.RESET))
 
+    print("Excuse: {}".format(excuse_type))
+        
     random_excuse = redis.srandmember(bot.config['System']['redis_prefix'] + "excuses:{}".format(excuse_type)).decode('utf-8')
 
     bot.message(channel, random_excuse)
