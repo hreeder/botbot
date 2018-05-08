@@ -7,14 +7,14 @@ beautifulsoup4==4.5.3
 chardet==2.3.0
 decorator==4.0.6
 feedparser==5.2.1
-flake8==2.5.4
+flake8==3.5.0
 ipython-genutils==0.1.0
-mccabe==0.4.0
+mccabe==0.6.1
 paho-mqtt==1.2
 pep8==1.7.0
 pike==0.1.1
 pluginbase==0.5
-pyflakes==1.0.0
+pyflakes==1.6.0
 pylast==1.4.2
 redis==2.10.3
 requests==2.9.1
