@@ -7,7 +7,7 @@ import requests
 from ircbot import bot
 
 
-def geocode(bot, channel, sender, args):
+def geocode(_bot, _channel, sender, args):
     geocode_endpoint = "http://maps.googleapis.com/maps/api/geocode/json"
     geocoder_args = {
         'sensor': 'false',
@@ -28,23 +28,25 @@ def geocode(bot, channel, sender, args):
 
 @bot.command('time')
 def time(bot, channel, sender, args):
-    '''Returns the time in a specified city'''
+    '''Returns the time in a specified city or the current time for ${bot.config['nick']}'''
+    if not args:
+        bot.message("The time is {}", pytime.strftime("%H:%M"))
+
     timezone_endpoint = "https://maps.googleapis.com/maps/api/timezone/json"
     time_endpoint = "http://api.timezonedb.com/"
 
     geocoded = geocode(bot, channel, sender, args)
-    if type(geocoded) != dict:
+    if isinstance(geocoded) != dict:
         bot.message(channel, geocoded)
     latlng = geocoded[u'geometry'][u'location']
 
     timezoner_args = {
         'sensor': 'false',
-        'location': str(latlng[u'lat']) + ',' + str(latlng[u'lng']),
+        'location': '{},{}'.format(str(latlng[u'lat']), str(latlng[u'lng'])),
         'timestamp': pytime.time()
     }
 
-    timezone_uri = timezone_endpoint + "?" + \
-        urllib.parse.urlencode(timezoner_args)
+    timezone_uri = f"${timezone_endpoint}?${urllib.parse.urlencode(timezoner_args)}"
     timezone_response = requests.get(timezone_uri).text
     timezone = json.loads(timezone_response)
 
@@ -60,41 +62,38 @@ def time(bot, channel, sender, args):
     localtime = json.loads(time_response)
 
     if localtime[u'status'] == u'FAIL':
-        bot.message(channel, "{}: I was unable to find the time in {}".format(sender, datetime.datetime.utcfromtimestamp(localtime[u'timestamp'])))
+        bot.message(channel, "{}: I was unable to find the time in {}".format(
+            sender, datetime.datetime.utcfromtimestamp(localtime[u'timestamp'])))
         return
 
     timenow = datetime.datetime.utcfromtimestamp(localtime[u'timestamp'])
 
-    bot.message(channel, "{}: It is currently {} in {} || Timezone: {} ({})".format(sender,
-                                                                                    timenow.strftime("%H:%M"),
-                                                                                    geocoded[u'formatted_address'],
-                                                                                    tz,
-                                                                                    timezone[u'timeZoneName']))
+    bot.message(channel, "{}: It is currently {} in {} || Timezone: {} ({})".format(
+        sender, timenow.strftime("%H:%M"), geocoded[u'formatted_address'], tz,
+        timezone[u'timeZoneName']))
 
 
 @bot.command('weather')
 def weather(bot, channel, sender, args):
-        weather_endpoint = "http://api.openweathermap.org/data/2.5/weather"
+    weather_endpoint = "http://api.openweathermap.org/data/2.5/weather"
 
-        geocoded = geocode(bot, channel, sender, args)
-        if type(geocoded) != dict:
-            bot.message(channel, geocoded)
-        latlng = geocoded[u'geometry'][u'location']
+    geocoded = geocode(bot, channel, sender, args)
+    if isinstance(geocoded) != dict:
+        bot.message(channel, geocoded)
+    latlng = geocoded[u'geometry'][u'location']
 
-        args = {
-            'lat': str(latlng[u'lat']),
-            'lon': str(latlng[u'lng']),
-            'units': 'metric',
-            'APPID': bot.config['OpenWeatherMap']['key']
-        }
+    args = {
+        'lat': str(latlng[u'lat']),
+        'lon': str(latlng[u'lng']),
+        'units': 'metric',
+        'APPID': bot.config['OpenWeatherMap']['key']
+    }
 
-        response = requests.get(weather_endpoint, params=args)
-        weather = response.json()
+    response = requests.get(weather_endpoint, params=args)
+    current_weather = response.json()
 
-        bot.message(channel, "{}: The current weather in {}: {} || {}°C || Wind: {} m/s || Clouds: {}% || Pressure: {} hpa".format(sender,
-                                                                                                                                   geocoded[u'formatted_address'],
-                                                                                                                                   weather['weather'][0]['description'],
-                                                                                                                                   weather['main']['temp'],
-                                                                                                                                   weather['wind']['speed'],
-                                                                                                                                   weather['clouds']['all'],
-                                                                                                                                   weather['main']['pressure']))
+    bot.message(channel, "{}: The current weather in {}: {} || {}°C || Wind: {} m/s || Clouds: {}% || Pressure: {} hpa".format(
+        sender, geocoded[u'formatted_address'],
+        current_weather['current_weather'][0]['description'], current_weather['main']['temp'],
+        current_weather['wind']['speed'], current_weather['clouds']['all'],
+        current_weather['main']['pressure']))
