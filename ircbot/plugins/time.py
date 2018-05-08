@@ -28,7 +28,7 @@ def geocode(_bot, _channel, sender, args):
 
 @bot.command('time')
 def time(bot, channel, sender, args):
-    '''Returns the time in a specified city or the current time for ${bot.config['nick']}'''
+    '''Returns the time in a specified city or the current time for {bot.config['nick']}'''
     if not args:
         bot.message("The time is {}", pytime.strftime("%H:%M"))
 
@@ -46,7 +46,7 @@ def time(bot, channel, sender, args):
         'timestamp': pytime.time()
     }
 
-    timezone_uri = f"${timezone_endpoint}?${urllib.parse.urlencode(timezoner_args)}"
+    timezone_uri = f"{timezone_endpoint}?{urllib.parse.urlencode(timezoner_args)}"
     timezone_response = requests.get(timezone_uri).text
     timezone = json.loads(timezone_response)
 
