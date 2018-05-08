@@ -33,7 +33,7 @@ def whereis_rikki(bot, channel, sender, args):
     data = requests.get(endpoint).json()
     last_updated = datetime.datetime.fromtimestamp(
         int(data['timestamp']) / 1000)
-    reported = last_updated.strftime('%Y/%m/%d %H:%M')
+    reported = last_updated.strftime('%Y/%m/%d %H:%M %Z')
 
     response = "Rikki's last location, reported on {}, was {}{}+{}".format(reported,
                                                                            mapurl,
@@ -63,7 +63,7 @@ def whereis_alistair(bot, channel, sender, args):
     mapurl = "http://maps.googleapis.com/maps/api/staticmap?size=640x320&markers=size:large%7Ccolor:0xc0c0c0%7C"
     data = requests.get(endpoint).json()
     last_updated = datetime.datetime.fromtimestamp(int(data['update']))
-    reported = last_updated.strftime('%Y/%m/%d %H:%M')
+    reported = last_updated.strftime('%Y/%m/%d %H:%M %Z')
 
     response = "Alistair's last location, reported on {}, was {}{}+{}".format(reported, mapurl, data['lat'], data['lon'])
     bot.message(channel, response)
@@ -74,7 +74,7 @@ def whereis_cazagen(bot, channel, sender, args):
     mapurl = "http://maps.googleapis.com/maps/api/staticmap?size=640x320&markers=size:large%7Ccolor:0xc0c0c0%7C"
     data = requests.get(endpoint).json()
     last_updated = datetime.datetime.fromtimestamp(int(data['update']))
-    reported = last_updated.strftime('%Y/%m/%d %H:%M')
+    reported = last_updated.strftime('%Y/%m/%d %H:%M %Z')
 
     response = "Cameron's last location, reported on {}, was {}{}+{}".format(reported, mapurl, data['lat'], data['lon'])
     bot.message(channel, response)
