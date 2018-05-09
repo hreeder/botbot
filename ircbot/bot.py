@@ -78,7 +78,7 @@ class BotBot(pydle.Client):
                 if not self.webserver_listening:
                     self.webserver = self.webapp.listen(self.config['Webhooks']['port'], self.config['Webhooks']['host'])
                     self.webserver_listening = True
-            except:
+            except Exception:
                 pass
 
             self.ignored_users.update(set(self.config['IRC']['ignore'].split()))
@@ -177,7 +177,7 @@ class BotBot(pydle.Client):
                 logger.debug("Dispatching {} Command".format(command))
                 try:
                     self.commands[command](self, channel, sender, args)
-                except:
+                except Exception:
                     if self.sentry:
                         self.sentry.captureException({
                             "channel": channel,

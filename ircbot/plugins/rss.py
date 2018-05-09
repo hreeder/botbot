@@ -41,7 +41,7 @@ class RSSCallback:
             title = f.feed.title
             try:
                 title = self.bot.config['Feeds']['{}_title_override'.format(feedname)]
-            except:
+            except KeyError:
                 pass
 
             data['title'] = title
