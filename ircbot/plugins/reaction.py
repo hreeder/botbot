@@ -23,6 +23,7 @@ def add_reaction(bot, channel, sender, args):
     url = args[0]
     term = "_".join(args[1:]).lower()
     redis.sadd(bot.config['System']['redis_prefix'] + "reactions:" + term, url)
+    bot.message(channel, "Reaction has been added 👍")
 
 
 @bot.command(';)')
