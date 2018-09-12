@@ -49,6 +49,6 @@ def link_title_parse_hook(bot, channel, sender, message):
                 title = truncate_title(title)
 
                 if title:
-                    bot.message(channel, " :: {}".format(title))
+                    bot.message(channel, "🔗 {}".format(title))
         except requests.exceptions.InvalidSchema:
             pass
