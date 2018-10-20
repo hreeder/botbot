@@ -11,4 +11,4 @@ RUN pip install pipenv \
 COPY . ./
 
 EXPOSE 4434
-CMD ["pipenv" "run" "python", "run.py"]
+CMD ["pipenv", "run", "python", "run.py"]
