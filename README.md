@@ -4,10 +4,9 @@ Botbot is an irc bot mostly developed for personal entertainment and some variou
 ## Setup
 Botbot is developed in Python 3, so please ensure that is installed on your system prior to following these steps.
 
-1. Optionally set up a virtualenv with 
-    `virtualenv -p $(which python3) <your_env_name>`
+1. Ensure you have [Pipenv](https://pipenv.readthedocs.io/en/latest/) installed.
 
-2. Install Requirements with `pip install -r requirements.txt`
+2. Install Requirements with `pipenv install`. Install development dependencies with `pipenv install --dev`.
 
 3. Create a configuration. Copy the distributable file from `config.ini.dist` to `config.ini` and edit as necessary.
 
